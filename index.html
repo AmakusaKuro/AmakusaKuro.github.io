@@ -17,14 +17,12 @@
   --accent:#e11d48;
   --transition:0.4s ease;
 
-  /* Light mode */
   --bg-light:#f8fafc;
   --text-light:#111827;
   --muted-light:#4b5563;
   --card-light:rgba(255,255,255,0.85);
   --shadow-light:0 10px 20px rgba(0,0,0,0.05);
 
-  /* Dark mode */
   --bg-dark:#0b0f19;
   --text-dark:#e2e8f0;
   --muted-dark:#94a3b8;
@@ -32,7 +30,7 @@
   --shadow-dark:0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* Theme switching variables */
+/* THEME */
 body[data-theme='dark'] {
   --bg:var(--bg-dark);
   --text:var(--text-dark);
@@ -50,7 +48,7 @@ body[data-theme='light'] {
   --bg-image:url('wallpaper2you_445634.jpg');
 }
 
-/* Base setup */
+/* BASE */
 html,body{
   margin:0;
   padding:0;
@@ -70,12 +68,9 @@ body::before {
   pointer-events:none;
   transition:background-color var(--transition);
 }
-body[data-theme='light']::before {
-  background:rgba(255,255,255,0.5);
-}
+body[data-theme='light']::before { background:rgba(255,255,255,0.5); }
 
 .container{max-width:var(--maxw);margin:auto;padding:40px 20px;}
-
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
 .brand{display:flex;align-items:center;gap:10px;}
 .logo{width:48px;height:48px;border-radius:12px;background:radial-gradient(circle,var(--accent),#7f1d1d);display:flex;justify-content:center;align-items:center;color:#fff;font-weight:800;}
@@ -92,51 +87,89 @@ nav a:hover{color:var(--accent);}
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
 .feature h3{margin:0 0 10px;color:var(--accent);}
 
-/* Profile section (no orbits now) */
-.profile {
-  position: relative;
-  width: 160px;
-  height: 160px;
-  margin: 40px auto;
-}
-.profile-pic {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent);
-  cursor: pointer;
-  transition: transform 0.3s;
-  display: block;
-}
-.profile-pic:hover { transform: scale(1.05); }
-.profile-name { font-size:22px;color:var(--accent);font-weight:800;margin-top:10px;text-align:center; }
+.profile{position:relative;width:160px;height:160px;margin:40px auto;}
+.profile-pic{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);cursor:pointer;transition:transform 0.3s;display:block;}
+.profile-pic:hover{transform:scale(1.05);}
+.profile-name{font-size:22px;color:var(--accent);font-weight:800;margin-top:10px;text-align:center;}
 
-/* Modal */
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;}
 .modal-content{max-width:85%;border-radius:16px;box-shadow:0 0 40px var(--accent);animation:zoom 0.3s ease;}
 @keyframes zoom{from{transform:scale(0.6);}to{transform:scale(1);}}
 
-/* Contact */
+/* CONTACT */
 form input,form textarea{
-  width:100%;
-  padding:10px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid var(--muted);
-  background:transparent;
-  color:inherit;
+  width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid var(--muted);
+  background:transparent;color:inherit;
 }
 form button{cursor:pointer;}
 button.pill{background:var(--accent);border:none;color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;transition:background-color 0.3s;}
 button.pill:hover{background-color:#b91c1c;}
-
 footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
+
+/* 🔥 SHARINGAN LOADING SCREEN 🔥 */
+#loader {
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  overflow:hidden;
+}
+.sharingan {
+  position:relative;
+  width:100px;
+  height:100px;
+  border:4px solid #e11d48;
+  border-radius:50%;
+  box-shadow:0 0 20px #e11d48;
+  animation:rotate 2s linear infinite;
+}
+.sharingan::before,
+.sharingan::after {
+  content:'';
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:#e11d48;
+  border-radius:50%;
+  box-shadow:0 0 10px #e11d48;
+}
+.sharingan::before { top:10px; left:50%; transform:translateX(-50%); }
+.sharingan::after { bottom:10px; left:50%; transform:translateX(-50%); }
+.dot {
+  position:absolute;
+  width:12px;
+  height:12px;
+  background:#e11d48;
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  transform-origin:center -40px;
+  animation:orbit 1.5s linear infinite;
+}
+@keyframes rotate { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+@keyframes orbit { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+
+/* Fade-out effect */
+.fade-out {
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.6s ease, visibility 0.6s ease;
+}
 </style>
 </head>
 
 <body>
-<div class="container">
+<!-- 🔴 LOADER -->
+<div id="loader">
+  <div class="sharingan">
+    <div class="dot"></div>
+  </div>
+</div>
+
+<div class="container" id="content" style="display:none;">
 <header>
   <div class="brand">
     <div class="logo">SS</div>
@@ -215,9 +248,7 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-// ✅ EmailJS Setup
 emailjs.init("erGrs0Gj00vcmV2wz");
-
 document.getElementById('year').textContent=new Date().getFullYear();
 
 function openModal(img){
@@ -227,7 +258,7 @@ function openModal(img){
   modalImg.src=img.src;
 }
 
-// ✅ Contact Form
+// Contact
 document.getElementById("contactForm").addEventListener("submit", function(e){
   e.preventDefault();
   emailjs.send("service_niampmn","template_237ojk6",{
@@ -243,7 +274,7 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
   });
 });
 
-// ✅ Theme Toggle with Background Switch
+// Theme toggle
 const toggle=document.getElementById('themeToggle');
 const body=document.body;
 const savedTheme=localStorage.getItem('theme');
@@ -254,6 +285,19 @@ toggle.addEventListener('click',()=>{
   body.dataset.theme=newTheme;
   toggle.textContent=newTheme==='dark'?'🌙':'☀️';
   localStorage.setItem('theme',newTheme);
+});
+
+// 🌀 Loader logic — lasts 2.5 seconds
+window.addEventListener("load", ()=>{
+  const loader=document.getElementById("loader");
+  const content=document.getElementById("content");
+  setTimeout(()=>{
+    loader.classList.add("fade-out");
+    setTimeout(()=>{
+      loader.style.display="none";
+      content.style.display="block";
+    },600);
+  },2500);
 });
 </script>
 </body>
