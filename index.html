@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Sharingan Services — Empower Your Vision</title>
-<meta name="description" content="Modern responsive portfolio by Chandan Das with dark/light mode and Sharingan-style animation."/>
+<meta name="description" content="Modern responsive portfolio by Chandan Das with theme-based backgrounds."/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/7/7e/Sharingan_triple.svg" type="image/png"/>
 
@@ -21,7 +21,7 @@
   --bg-light:#f8fafc;
   --text-light:#111827;
   --muted-light:#4b5563;
-  --card-light:rgba(255,255,255,0.8);
+  --card-light:rgba(255,255,255,0.85);
   --shadow-light:0 10px 20px rgba(0,0,0,0.05);
 
   /* Dark mode */
@@ -32,12 +32,14 @@
   --shadow-dark:0 10px 25px rgba(0,0,0,0.3);
 }
 
+/* Theme switching variables */
 body[data-theme='dark'] {
   --bg:var(--bg-dark);
   --text:var(--text-dark);
   --muted:var(--muted-dark);
   --card:var(--card-dark);
   --shadow:var(--shadow-dark);
+  --bg-image:url('itachi.png');
 }
 body[data-theme='light'] {
   --bg:var(--bg-light);
@@ -45,31 +47,31 @@ body[data-theme='light'] {
   --muted:var(--muted-light);
   --card:var(--card-light);
   --shadow:var(--shadow-light);
+  --bg-image:url('wallpaper2you_445634.jpg');
 }
 
+/* Base setup */
 html,body{
   margin:0;
   padding:0;
   font-family:var(--ff);
-  background:var(--bg);
-  color:var(--text);
-  transition:background-color var(--transition),color var(--transition);
-  background-image:url('itachi.png');
+  background:var(--bg) no-repeat center center fixed;
+  background-image:var(--bg-image);
   background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
+  color:var(--text);
+  transition:background-image 1s ease-in-out,background-color var(--transition),color var(--transition);
 }
 
 body::before {
   content:"";
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.45);
   pointer-events:none;
   transition:background-color var(--transition);
 }
 body[data-theme='light']::before {
-  background:rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.5);
 }
 
 .container{max-width:var(--maxw);margin:auto;padding:40px 20px;}
@@ -90,7 +92,7 @@ nav a:hover{color:var(--accent);}
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
 .feature h3{margin:0 0 10px;color:var(--accent);}
 
-/* Profile + Sharingan Dots */
+/* Profile section (no orbits now) */
 .profile {
   position: relative;
   width: 160px;
@@ -109,27 +111,6 @@ nav a:hover{color:var(--accent);}
 }
 .profile-pic:hover { transform: scale(1.05); }
 .profile-name { font-size:22px;color:var(--accent);font-weight:800;margin-top:10px;text-align:center; }
-
-/* Three orbiting tomoe */
-.orbit-dot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 15px 3px rgba(255, 0, 0, 0.6);
-}
-
-/* each orbit's radius and speed */
-.dot1 { transform-origin: 95px center; animation: orbit1 60s linear infinite; }
-.dot2 { transform-origin: 75px center; animation: orbit2 40s linear infinite; }
-.dot3 { transform-origin: 60px center; animation: orbit3 20s linear infinite; }
-
-@keyframes orbit1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes orbit2 { from { transform: rotate(120deg); } to { transform: rotate(480deg); } }
-@keyframes orbit3 { from { transform: rotate(240deg); } to { transform: rotate(600deg); } }
 
 /* Modal */
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;}
@@ -205,9 +186,6 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
 <section id="about">
   <h2 style="text-align:center;">About</h2>
   <div class="profile">
-    <div class="orbit-dot dot1"></div>
-    <div class="orbit-dot dot2"></div>
-    <div class="orbit-dot dot3"></div>
     <img src="me-fotor-20251030235950.jpg" alt="Chandan Das" class="profile-pic" onclick="openModal(this)">
   </div>
   <h3 class="profile-name">Chandan Das</h3>
@@ -265,7 +243,7 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
   });
 });
 
-// ✅ Theme Toggle
+// ✅ Theme Toggle with Background Switch
 const toggle=document.getElementById('themeToggle');
 const body=document.body;
 const savedTheme=localStorage.getItem('theme');
