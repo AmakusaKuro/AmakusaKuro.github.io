@@ -47,7 +47,7 @@ body[data-theme='light'] {
 }
 
 /* BASE */
-html,body{
+html,body{padding-top:80px;
   margin:0;
   padding:0;
   font-family:var(--ff);
@@ -70,17 +70,138 @@ body::before {
 body[data-theme='light']::before { background:rgba(255,255,255,0.5); }
 
 /* STICKY HEADER */
-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(17,25,40,0.85);
-  backdrop-filter:blur(10px);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 20px;
-  border-bottom:1px solid rgba(255,255,255,0.1);
+/* HEADER REFINED */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background: rgba(17, 25, 40, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  transition: background 0.4s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+body[data-theme='light'] header {
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* SCROLLED STATE */
+header.scrolled {
+  background: rgba(17, 25, 40, 0.6);
+  padding: 10px 24px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+body[data-theme='light'] header.scrolled {
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* BRAND */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
+.logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: radial-gradient(circle, var(--accent), #7f1d1d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* NAVIGATION */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+nav a:hover {
+  color: var(--accent);
+  background: rgba(225, 29, 72, 0.08);
+}
+
+/* CONTROL BUTTONS (Search + Theme) */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: fit-content;
+}
+.search-btn,
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-btn:hover,
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 700px) {
+  header {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+  nav {
+    flex-basis: 100%;
+    justify-content: center;
+    gap: 6px;
+  }
+}
+
+body[data-theme='light'] header {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+header.scrolled {
+  background: rgba(17, 25, 40, 0.65);
+  padding: 10px 20px;
+}
+body[data-theme='light'] header.scrolled {
+  background: rgba(255, 255, 255, 0.65);
 }
 body[data-theme='light'] header{
   background:rgba(255,255,255,0.8);
@@ -170,6 +291,27 @@ body::after {
 .profile-name{font-size:22px;color:var(--accent);font-weight:800;margin-top:10px;text-align:center;}
 footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
 
+/* CONTACT */
+#contact input:focus, #contact textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(225,29,72,0.6);
+  outline: none;
+}
+#contact button.pill:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(225,29,72,0.6);
+  background:linear-gradient(90deg,#ff2d55,#b91c1c);
+}
+
+/* GAME STYLES */
+.game-wrap{max-width:820px;margin:24px auto;padding:18px;border-radius:12px;}
+.game-canvas{width:100%;height:180px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45));border-radius:10px;display:block;box-shadow:0 8px 30px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.03);}
+.game-controls{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+.score{font-weight:800;color:var(--accent);}
+.hint{color:var(--muted);font-size:13px;}
+.restart{background:none;border:1px solid var(--muted);padding:8px 12px;border-radius:8px;color:var(--muted);cursor:pointer;}
+.restart:hover{border-color:var(--accent);color:var(--accent);}
+
 /* LOADER */
 #loader {
   position:fixed;
@@ -234,13 +376,16 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
       <div class="muted" style="font-size:13px;">Beautiful • Fast • Responsive</div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <nav>
-      <a href="#features">Services</a>
-      <a href="#about">About</a>
-      <a href="#hobbies">Hobbies</a>
-      <a href="#contact">Contact</a>
-    </nav>
+
+  <nav>
+    <a href="#features">Services</a>
+    <a href="#about">About</a>
+    <a href="#hobbies">Hobbies</a>
+    <a href="#games">Games</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="controls">
     <button id="searchBtn" class="search-btn">🔍</button>
     <button id="themeToggle" class="theme-toggle">🌙</button>
   </div>
@@ -299,7 +444,174 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
   </p>
 </section>
 
-<!-- 🌟 Polished Contact Section 🌟 -->
+<!-- GAMES SECTION: Spaceship Jump (fixed/responsive) -->
+<section id="games" class="card" style="margin-top:40px;">
+  <h2 style="text-align:center;">Play: Spaceship Jump</h2>
+  <p class="muted" style="text-align:center;max-width:700px;margin:10px auto 18px;">
+    Short break? Jump through the asteroids. Press <strong>Space</strong> or <strong>Click/Tap</strong> to jump. Avoid obstacles & rack up points!
+  </p>
+
+  <div class="game-wrap card" style="background:transparent;padding:12px;">
+    <!-- Give the canvas an initial size attributes to avoid zero-dim issues -->
+    <canvas id="gameCanvas" class="game-canvas" width="800" height="180" style="width:100%;height:180px;"></canvas>
+
+    <div class="game-controls">
+      <div>
+        <span class="score" id="scoreDisplay">Score: 0</span>
+        <span class="hint" style="margin-left:12px;">High: <span id="highScore">0</span></span>
+      </div>
+      <div>
+        <button id="restartBtn" class="restart">Restart</button>
+        <button id="muteBtn" class="restart" style="margin-left:8px;">🔊</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="muted" style="text-align:center;margin-top:12px;font-size:13px;">
+    This is a small offline canvas game embedded right here — no tracking, no ads.
+  </p>
+</section>
+
+<!-- 🚀 Space Invaders Game Section -->
+<section id="games" class="card" style="margin-top:50px;">
+  <h2 style="text-align:center;">Space Invaders</h2>
+  <p class="muted" style="text-align:center;max-width:600px;margin:10px auto 30px;">
+    Take a break from coding — defend the galaxy! Use the <b>←</b>, <b>→</b> keys to move and <b>Space</b> to shoot.
+  </p>
+
+  <div class="game-container" style="display:flex;justify-content:center;">
+    <canvas id="gameCanvas" width="800" height="600"
+      style="border-radius:12px;box-shadow:0 0 20px rgba(225,29,72,0.5);background:#000;">
+    </canvas>
+  </div>
+
+  <p id="gameMessage" style="text-align:center;font-weight:700;margin-top:15px;color:var(--accent);display:none;"></p>
+</section>
+
+<style>
+#games canvas {image-rendering: pixelated;}
+</style>
+
+<script>
+/* --- Compact JS version of your Space Invaders game --- */
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const bg = new Image();  bg.src = "background-blue.png";
+const shipImg = new Image();  shipImg.src = "spaceship.png";
+const ufoImg = new Image();   ufoImg.src = "ufo.png";
+const laserImg = new Image(); laserImg.src = "laser.png";
+const enemyLaserImg = new Image(); enemyLaserImg.src = "enemyLaser.png";
+
+let ship = {x:canvas.width/2-25, y:canvas.height-60, w:50, h:50};
+let keys = {}, lasers = [], enemies = [], enemyLasers = [];
+let gameOver = false, win = false;
+
+function createEnemies(){
+  for(let i=0;i<2;i++){
+    for(let j=0;j<8;j++){
+      enemies.push({x:j*90+40, y:i*80+60, w:50, h:50, cd:Math.random()*100});
+    }
+  }
+}
+createEnemies();
+
+function drawBackground(){
+  ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+}
+
+function drawShip(){
+  ctx.drawImage(shipImg, ship.x, ship.y, ship.w, ship.h);
+}
+
+function drawEnemies(){
+  enemies.forEach(e=> ctx.drawImage(ufoImg, e.x, e.y, e.w, e.h));
+}
+
+function drawLasers(){
+  lasers.forEach(l => ctx.drawImage(laserImg, l.x, l.y, 10, 25));
+  enemyLasers.forEach(l => ctx.drawImage(enemyLaserImg, l.x, l.y, 10, 20));
+}
+
+function updateLasers(){
+  lasers.forEach((l,i)=>{
+    l.y -= 5;
+    if(l.y < 0) lasers.splice(i,1);
+    enemies.forEach((e,j)=>{
+      if(l.x < e.x+e.w && l.x+10>e.x && l.y<e.y+e.h && l.y+25>e.y){
+        enemies.splice(j,1);
+        lasers.splice(i,1);
+      }
+    });
+  });
+  enemyLasers.forEach((l,i)=>{
+    l.y += 3;
+    if(l.y>canvas.height) enemyLasers.splice(i,1);
+    if(l.x < ship.x+ship.w && l.x+10>ship.x && l.y<ship.y+ship.h && l.y+20>ship.y){
+      gameOver=true;
+    }
+  });
+}
+
+function updateEnemies(){
+  const dx=Math.sin(Date.now()/1000)*20;
+  enemies.forEach(e=>{
+    e.x+=dx*0.02;
+    if(Math.random()<0.003){
+      enemyLasers.push({x:e.x+e.w/2, y:e.y+20});
+    }
+  });
+}
+
+function draw(){
+  if(gameOver||win) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBackground();
+  drawShip();
+  drawEnemies();
+  drawLasers();
+}
+
+function update(){
+  if(keys["ArrowLeft"]) ship.x-=4;
+  if(keys["ArrowRight"]) ship.x+=4;
+  ship.x=Math.max(0,Math.min(canvas.width-ship.w,ship.x));
+  updateLasers();
+  updateEnemies();
+  if(enemies.length===0) win=true;
+}
+
+function loop(){
+  draw();
+  update();
+  if(gameOver){
+    document.getElementById("gameMessage").innerText="💀 GAME OVER! Better luck next time.";
+    document.getElementById("gameMessage").style.display="block";
+  } else if(win){
+    document.getElementById("gameMessage").innerText="🏆 YOU WIN! Winner winner chicken dinner!";
+    document.getElementById("gameMessage").style.display="block";
+  } else {
+    requestAnimationFrame(loop);
+  }
+}
+
+window.addEventListener("keydown",e=>{
+  keys[e.key]=true;
+  if(e.code==="Space"){
+    lasers.push({x:ship.x+ship.w/2-5,y:ship.y});
+  }
+});
+window.addEventListener("keyup",e=>keys[e.key]=false);
+
+bg.onload=()=>loop();
+</script>
+
+<p style="text-align:center;font-size:12px;margin-top:10px;">
+  <em>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from 
+  <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">www.flaticon.com</a></em>
+</p>
+
+<!-- Polished Contact Section -->
 <section id="contact" class="card" style="margin-top:60px;">
   <h2 style="text-align:center;font-size:28px;">Get in Touch</h2>
   <p class="muted" style="text-align:center;max-width:600px;margin:10px auto 30px;">
@@ -352,21 +664,6 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
   </p>
 </section>
 
-<!-- Contact input animation styling -->
-<style>
-#contact input:focus, #contact textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 10px rgba(225,29,72,0.6);
-  outline: none;
-}
-#contact button.pill:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(225,29,72,0.6);
-  background:linear-gradient(90deg,#ff2d55,#b91c1c);
-}
-</style>
-
-
 <footer>
   © <span id="year"></span> Sharingan Services • Crafted by Chandan Das
 </footer>
@@ -378,6 +675,9 @@ footer{text-align:center;margin-top:40px;color:var(--muted);font-size:14px;}
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+/* -----------------------
+   Site core: theme, loader, search, scroll reveal
+   ----------------------- */
 emailjs.init("erGrs0Gj00vcmV2wz");
 document.getElementById('year').textContent=new Date().getFullYear();
 
@@ -395,9 +695,23 @@ document.getElementById("contactForm").addEventListener("submit", function(e){
     from_name: document.getElementById("name").value,
     from_email: document.getElementById("email").value,
     message: document.getElementById("message").value
-  }).then(()=>{alert("Message sent successfully!");e.target.reset();},
-  (err)=>{console.error("EmailJS error:", err);alert("Failed to send message.");});
+  }).then(()=>{
+    showContactSuccess();
+    e.target.reset();
+  },(err)=>{console.error("EmailJS error:", err);alert("Failed to send message.");});
 });
+
+// Simple success message instead of alert
+function showContactSuccess(){
+  const sec=document.getElementById('contact');
+  const msg=document.createElement('div');
+  msg.textContent='✅ Message sent — I will reply soon.';
+  msg.style.cssText='text-align:center;margin-top:12px;color:var(--accent);font-weight:700;opacity:0;transition:opacity .4s';
+  sec.appendChild(msg);
+  requestAnimationFrame(()=>msg.style.opacity=1);
+  setTimeout(()=>msg.style.opacity=0,3000);
+  setTimeout(()=>msg.remove(),3600);
+}
 
 // THEME TOGGLE
 const toggle=document.getElementById('themeToggle');
@@ -418,9 +732,15 @@ const observer = new IntersectionObserver(entries=>{
     if(entry.isIntersecting){ entry.target.classList.add('visible'); }
   });
 },{threshold:0.2});
-document.querySelectorAll('section').forEach(sec=>observer.observe(sec));
 
-// SEARCH TOGGLE
+// Add sections to observer after content shown
+function attachSectionObserver(){
+  document.querySelectorAll('section').forEach(sec=>observer.observe(sec));
+}
+
+/* -----------------------
+   SEARCH TOGGLE
+   ----------------------- */
 const searchBtn=document.getElementById('searchBtn');
 const searchBar=document.getElementById('searchBar');
 const searchInput=document.getElementById('searchInput');
@@ -436,15 +756,319 @@ searchInput.addEventListener('input',()=>{
   });
 });
 
-// LOADER
+/* -----------------------
+   LOADER (show content then trigger resize/observers)
+   ----------------------- */
 window.addEventListener("load", ()=>{
   const loader=document.getElementById("loader");
   const content=document.getElementById("content");
   setTimeout(()=>{
     loader.classList.add("fade-out");
-    setTimeout(()=>{loader.style.display="none";content.style.display="block";},600);
-  },2500);
+    setTimeout(()=>{
+      loader.style.display="none";
+      content.style.display="block";
+
+      // After content is visible, attach observers and resize canvas
+      attachSectionObserver();
+      if (typeof resizeGameCanvas === 'function') resizeGameCanvas();
+
+    },600);
+  },600); // slightly shorter delay
+});
+
+/* -----------------------
+   GAME: Spaceship Jump (Canvas)
+   Robust/responsive fix: avoid zero-size canvas when hidden
+   ----------------------- */
+
+(function(){
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  let deviceRatio = window.devicePixelRatio || 1;
+  let W = 800, H = 180;
+
+  // Resize function with fallback when bounding rect is zero
+  function resizeGameCanvas(){
+    deviceRatio = window.devicePixelRatio || 1;
+    const container = canvas.parentElement;
+    // Prefer the container's current width; fallback to window width minus margins
+    const rect = container.getBoundingClientRect();
+    let desiredWidth = rect.width || Math.min(820, window.innerWidth - 80) || 800;
+    desiredWidth = Math.min(820, desiredWidth);
+    // Use integer pixel values for crispness on high-DPI
+    const backingW = Math.floor(desiredWidth * deviceRatio);
+    const backingH = Math.floor(180 * deviceRatio);
+
+    canvas.width = backingW;
+    canvas.height = backingH;
+    canvas.style.width = (desiredWidth) + 'px';
+    canvas.style.height = '180px';
+
+    // Reset transform so drawing uses CSS pixels scaled by deviceRatio
+    ctx.setTransform(deviceRatio,0,0,deviceRatio,0,0);
+
+    W = canvas.width / deviceRatio;
+    H = canvas.height / deviceRatio;
+  }
+
+  // Expose to global so loader can call it after showing content
+  window.resizeGameCanvas = resizeGameCanvas;
+
+  // Ensure we have a valid initial size even if called early
+  resizeGameCanvas();
+
+  // Re-resize on window resize (debounced)
+  let rTO;
+  window.addEventListener('resize', ()=>{ clearTimeout(rTO); rTO = setTimeout(resizeGameCanvas,120); });
+
+  // Game state
+  let running = true;
+  let score = 0;
+  let high = Number(localStorage.getItem('ss_high') || 0);
+  const scoreEl = document.getElementById('scoreDisplay');
+  const highEl = document.getElementById('highScore');
+  highEl.textContent = high;
+
+  // Ship
+  const ship = {
+    x: 60,
+    y: H - 48,
+    w: 44,
+    h: 22,
+    vy: 0,
+    gravity: 0.9,
+    jumpStrength: -14,
+    grounded: true,
+    draw(){
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      // body
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.moveTo(0, -10);
+      ctx.lineTo(28, -5);
+      ctx.lineTo(28, 5);
+      ctx.lineTo(0, 10);
+      ctx.closePath();
+      ctx.fill();
+      // cockpit
+      ctx.fillStyle = 'rgba(225,29,72,0.95)';
+      ctx.fillRect(6, -6, 10, 12);
+      ctx.restore();
+    },
+    update(){
+      this.vy += this.gravity;
+      this.y += this.vy;
+      if(this.y >= H - 48){
+        this.y = H - 48;
+        this.vy = 0;
+        this.grounded = true;
+      } else {
+        this.grounded = false;
+      }
+    },
+    jump(){
+      if(this.grounded){
+        this.vy = this.jumpStrength;
+        this.grounded = false;
+        playSfx('jump');
+      }
+    },
+    reset(){
+      this.y = H - 48;
+      this.vy = 0;
+      this.grounded = true;
+    }
+  };
+
+  // Obstacles
+  let obstacles = [];
+  let spawnTimer = 0;
+  let spawnInterval = 90; // frames
+  let gameSpeed = 6; // base movement speed
+
+  function spawnObstacle(){
+    const size = 18 + Math.random()*26;
+    const obs = {
+      x: W + 20,
+      y: H - 42 - (Math.random() < 0.3 ? (10+Math.random()*30) : 0),
+      w: size,
+      h: size,
+      vx: -gameSpeed,
+      draw(){
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.fillStyle = 'rgba(130,130,130,0.95)';
+        ctx.beginPath();
+        ctx.arc(0,0,this.w/2,0,Math.PI*2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.arc(-this.w*0.12,-this.h*0.12,this.w*0.18,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      },
+      update(){
+        this.x += this.vx;
+      }
+    };
+    obstacles.push(obs);
+  }
+
+  // WebAudio SFX
+  const audioContext = ('AudioContext' in window) ? new AudioContext() : null;
+  function playSfx(type){
+    if(!audioContext || mute) return;
+    const o = audioContext.createOscillator();
+    const g = audioContext.createGain();
+    o.connect(g);
+    g.connect(audioContext.destination);
+    if(type==='jump'){
+      o.frequency.value = 520;
+      g.gain.value = 0.02;
+      o.type = 'sine';
+    } else if(type==='hit'){
+      o.frequency.value = 120;
+      g.gain.value = 0.05;
+      o.type = 'sawtooth';
+    } else {
+      o.frequency.value = 220;
+      g.gain.value = 0.03;
+    }
+    o.start();
+    setTimeout(()=>{ o.stop(); }, 120);
+  }
+
+  // Mute toggle
+  let mute = false;
+  const muteBtn = document.getElementById('muteBtn');
+  muteBtn.addEventListener('click', ()=>{
+    mute = !mute;
+    muteBtn.textContent = mute ? '🔈' : '🔊';
+  });
+
+  // Restart button
+  document.getElementById('restartBtn').addEventListener('click', resetGame);
+
+  // Input
+  window.addEventListener('keydown', (e)=>{
+    if(e.code === 'Space'){
+      e.preventDefault();
+      if(!running) resetGame();
+      ship.jump();
+    }
+  });
+  canvas.addEventListener('mousedown', ()=>{
+    if(!running) resetGame();
+    ship.jump();
+  });
+  canvas.addEventListener('touchstart', (e)=>{
+    e.preventDefault();
+    if(!running) resetGame();
+    ship.jump();
+  }, {passive:false});
+
+  // Collision (approx)
+  function checkCollision(a,b){
+    return !(a.x + a.w/2 < b.x - b.w/2 || a.x - a.w/2 > b.x + b.w/2 || a.y + a.h/2 < b.y - b.h/2 || a.y - a.h/2 > b.y + b.h/2);
+  }
+
+  // Game loop
+  let frame = 0;
+  function update(){
+    if(!running) return;
+    frame++;
+    ctx.clearRect(0,0,W,H);
+
+    // ground line
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    ctx.fillRect(0, H - 32, W, 2);
+
+    ship.update();
+    ship.draw();
+
+    // spawn
+    spawnTimer++;
+    if(spawnTimer > spawnInterval){
+      spawnObstacle();
+      spawnTimer = 0;
+      spawnInterval = 60 + Math.floor(Math.random()*60);
+    }
+
+    // obstacles
+    for(let i=obstacles.length-1;i>=0;i--){
+      const o = obstacles[i];
+      o.vx = -gameSpeed;
+      o.update();
+      o.draw();
+      // collision
+      if(Math.abs(ship.x - o.x) < (ship.w/2 + o.w/2) && Math.abs(ship.y - o.y) < (ship.h/2 + o.h/2)){
+        running = false;
+        playSfx('hit');
+        showGameOver();
+      }
+      if(o.x + o.w < -50) obstacles.splice(i,1);
+    }
+
+    // score
+    if(frame % 3 === 0) {
+      score++;
+      scoreEl.textContent = 'Score: ' + score;
+      if(score > high){ high = score; highEl.textContent = high; localStorage.setItem('ss_high', high); }
+    }
+
+    // difficulty ramp
+    if(frame % 600 === 0) { gameSpeed += 0.6; }
+
+    requestAnimationFrame(update);
+  }
+
+  function showGameOver(){
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = 'white';
+    ctx.font = '18px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over — Click or press Space to restart', W/2, H/2 - 6);
+    ctx.fillStyle = 'rgba(225,29,72,0.95)';
+    ctx.font = 'bold 26px Nunito, sans-serif';
+    ctx.fillText('Score: ' + score, W/2, H/2 + 26);
+  }
+
+  function resetGame(){
+    obstacles = [];
+    spawnTimer = 0;
+    spawnInterval = 90;
+    gameSpeed = 6;
+    score = 0;
+    frame = 0;
+    scoreEl.textContent = 'Score: 0';
+    ship.reset();
+    running = true;
+    // ensure sizes are correct after any layout changes
+    resizeGameCanvas();
+    update();
+  }
+
+  // Expose reset for external use
+  window.resetGame = resetGame;
+
+  // Start loop after initial sizing
+  resetGame();
+
+})();
+</script>
+
+<script>
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header');
+  if (window.scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
 });
 </script>
+
 </body>
 </html>
