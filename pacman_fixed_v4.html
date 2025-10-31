@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Mini Pac‑Man — Fixed v4 (Classic Sounds)</title>
+<style>
+  :root{
+    --bg:#000814;
+    --wall:#082f66;
+    --wall-highlight:#0b5aa0;
+    --pellet:#ffd966;
+    --power:#ff6b6b;
+    --pac:#ffd400;
+    --ghost-red:#ff4d4f;
+    --ghost-cyan:#4de0ff;
+    --ghost-pink:#ff86d0;
+    --ghost-orange:#ffb86b;
+    --hud:#e6eef6;
+    --font: "Nunito", system-ui, sans-serif;
+  }
+  html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--hud)}
+  .wrap{width:min(740px,96vw);margin:18px auto;text-align:center;}
+  h1{margin:6px 0 12px;font-weight:700;font-size:20px;color:#cfe8ff}
+  #gameArea{display:flex;gap:14px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+  canvas{background:linear-gradient(180deg,#000814,#001022);border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,0.7);display:block;}
+  .hud{min-width:220px;color:var(--hud);text-align:left}
+  .panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.04));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  button{background:#071b2a;color:var(--hud);border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+  .small{font-size:13px;color:#9fb6d0}
+  .footer{margin-top:12px;font-size:13px;color:#9fb6d0}
+  .legend{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .dot{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:6px}
+  .dot.pel{background:var(--pellet)}
+  .dot.power{background:var(--power)}
+  .dot.pac{background:var(--pac)}
+  canvas{image-rendering:pixelated}
+  @media (max-width:760px){
+    .hud{min-width:180px}
+    #gameArea{flex-direction:column;align-items:center}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Mini Pac‑Man — Classic Arcade (v4) — Sounds Enabled</h1>
+  <div id="gameArea">
+    <canvas id="board" width="640" height="640"></canvas>
+    <div class="hud panel">
+      <div class="row"><div>Score</div><div id="score">0</div></div>
+      <div class="row"><div>Lives</div><div id="lives">3</div></div>
+      <div class="row"><div>Level</div><div id="level">1</div></div>
+      <div class="controls" style="margin-top:8px">
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="restartBtn">Restart</button>
+      </div>
+      <div class="legend small">
+        <div><span class="dot pel"></span>Pellet (chomp)</div>
+        <div><span class="dot power"></span>Power</div>
+        <div><span class="dot pac"></span>Pac‑Man</div>
+      </div>
+      <div class="footer">Sounds start after first interaction (Start or key press) to comply with browser autoplay policies.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* pacman_fixed_v4.js - adds WebAudio retro sounds to v3 game
+   Sounds are initialized on first user interaction (Start button or key press)
+   to comply with autoplay restrictions.
+*/
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+
+const GRID = 20;
+const TILE = canvas.width / GRID;
+const WIDTH = canvas.width;
+const HEIGHT = canvas.height;
+
+let score = 0, lives = 3, level = 1;
+let running = false, paused = false;
+let audioReady = false;
+let audioCtx = null;
+let masterGain = null;
+
+// --- WebAudio helper functions (retro tones) ---
+function initAudio(){
+  if(audioReady) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.08; // master volume
+    masterGain.connect(audioCtx.destination);
+    audioReady = true;
+  } catch(e){
+    console.warn('WebAudio unsupported', e);
+    audioReady = false;
+  }
+}
+
+function playTone(freq, duration=0.12, type='square', time=0, volume=0.8){
+  if(!audioReady) return;
+  const now = audioCtx.currentTime + (time || 0);
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, now);
+  g.gain.setValueAtTime(volume, now);
+  g.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  o.connect(g); g.connect(masterGain);
+  o.start(now);
+  o.stop(now + duration + 0.02);
+}
+
+function playChomp(){ // small quick blip for pellet
+  playTone(880, 0.06, 'square', 0, 0.9);
+}
+function playPower(){ // fuller chomp for power pellet
+  playTone(660, 0.12, 'square', 0, 1.0);
+  playTone(1100, 0.08, 'sine', 0.06, 0.6);
+}
+function playGhostEaten(){ // descending tone
+  if(!audioReady) return;
+  const now = audioCtx.currentTime;
+  playTone(900, 0.09, 'square', 0, 1.0);
+  playTone(700, 0.12, 'square', 0.09, 0.9);
+}
+function playDeath(){ // buzzy death sequence
+  if(!audioReady) return;
+  const now = audioCtx.currentTime;
+  playTone(220, 0.22, 'sawtooth', 0, 1.0);
+  playTone(160, 0.28, 'sawtooth', 0.22, 0.9);
+  playTone(110, 0.35, 'sawtooth', 0.5, 0.8);
+}
+function playLevelUp(){ // ascending jingle
+  if(!audioReady) return;
+  playTone(600, 0.08, 'square', 0, 0.9);
+  playTone(800, 0.08, 'square', 0.08, 0.9);
+  playTone(1000, 0.12, 'square', 0.16, 0.9);
+}
+
+// --- Map & game state (same as v3, slightly redesigned corridors) ---
+const baseMap = [
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+[1,2,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,2,1],
+[1,0,1,1,1,0,0,1,0,1,1,1,0,1,0,0,1,0,0,1],
+[1,0,1,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1],
+[1,0,1,0,1,0,1,1,1,1,0,1,0,1,0,1,0,1,0,1],
+[1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+[1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,1],
+[1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1],
+[1,1,1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1],
+[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+[1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,0,1],
+[1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+[1,0,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1,1],
+[1,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1],
+[1,0,1,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
+[1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1],
+[1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1],
+[1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,2,1],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+];
+let map = [];
+function resetMap(){ map = baseMap.map(r=>r.slice()); }
+resetMap();
+
+function cellToCenter(x,y){ return { x: x*TILE + TILE/2, y: y*TILE + TILE/2 }; }
+
+// Pac state
+let pac = { x:9, y:15, dir:{x:0,y:0}, nextDir:{x:0,y:0}, speed:4, radius: TILE*0.45 };
+let pacPx = pac.x * TILE, pacPy = pac.y * TILE;
+
+// Ghost class (slower)
+function Ghost(gx, gy, color){
+  this.x = gx; this.y = gy; this.px = gx*TILE; this.py = gy*TILE;
+  this.dir = {x:0,y:0}; this.speed = 2.4; this.color = color;
+  this.frightened = false; this.frightTimer = 0;
+}
+Ghost.prototype.update = function(){
+  const cx = this.px + TILE/2, cy = this.py + TILE/2;
+  if(Math.abs((cx % TILE)-TILE/2) < 0.6 && Math.abs((cy % TILE)-TILE/2) < 0.6){
+    this.px = Math.round(this.px/TILE)*TILE;
+    this.py = Math.round(this.py/TILE)*TILE;
+    this.x = Math.round(this.px/TILE);
+    this.y = Math.round(this.py/TILE);
+    const deltas = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+    let options = deltas.filter(d=>{
+      const nx = this.x + d.x, ny = this.y + d.y;
+      if(nx<0||ny<0||nx>=GRID||ny>=GRID) return false;
+      return map[ny][nx] !== 1;
+    });
+    if(options.length===0) options=[{x:0,y:0}];
+    if(this.frightened){
+      this.dir = options[Math.floor(Math.random()*options.length)];
+    } else {
+      options.sort((a,b)=>{
+        const da = Math.hypot((this.x+a.x)-pac.x,(this.y+a.y)-pac.y);
+        const db = Math.hypot((this.x+b.x)-pac.x,(this.y+b.y)-pac.y);
+        return da-db;
+      });
+      this.dir = options[0];
+      if(Math.random()<0.2 && options.length>1) this.dir = options[Math.floor(Math.random()*options.length)];
+    }
+  }
+  this.px += this.dir.x * this.speed;
+  this.py += this.dir.y * this.speed;
+  this.x = Math.round(this.px/TILE);
+  this.y = Math.round(this.py/TILE);
+  if(this.frightened){
+    this.frightTimer--;
+    if(this.frightTimer<=0) this.frightened=false;
+  }
+};
+Ghost.prototype.draw = function(ctx){
+  const cx = this.px + TILE/2, cy = this.py + TILE/2;
+  const r = TILE*0.42;
+  ctx.save(); ctx.translate(cx,cy);
+  ctx.beginPath();
+  ctx.fillStyle = this.frightened ? "#7fb0ff" : this.color;
+  ctx.arc(0, -r*0.15, r*0.8, Math.PI, 0, false);
+  ctx.lineTo(r*0.6, r*0.55);
+  for(let i=0;i<5;i++){ const tx = r*0.6 - (i*(r*1.2/5)); ctx.quadraticCurveTo(tx, r*0.55, tx - (r*1.2/5), r*0.55); }
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(-r*0.28, -r*0.1, r*0.18, r*0.22,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(r*0.12, -r*0.1, r*0.18, r*0.22,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(-r*0.2 + (this.dir.x*3), -r*0.1 + (this.dir.y*3), r*0.08, r*0.1,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(r*0.2 + (this.dir.x*3), -r*0.1 + (this.dir.y*3), r*0.08, r*0.1,0,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+};
+
+let ghosts = [];
+function spawnGhosts(){
+  ghosts = [
+    new Ghost(9,8,'var(--ghost-red)'),
+    new Ghost(10,8,'var(--ghost-pink)'),
+    new Ghost(8,8,'var(--ghost-cyan)'),
+    new Ghost(11,8,'var(--ghost-orange)')
+  ];
+  ghosts.forEach(g=>{ g.px = g.x*TILE; g.py = g.y*TILE; });
+}
+spawnGhosts();
+
+function drawMap(){
+  for(let y=0;y<GRID;y++){
+    for(let x=0;x<GRID;x++){
+      const v = map[y][x];
+      const px = x*TILE, py = y*TILE;
+      if(v===1){
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wall') || '#082f66';
+        ctx.fillRect(px+2, py+2, TILE-4, TILE-4);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wall-highlight') || '#0b5aa0';
+        ctx.fillRect(px+2, py+2, TILE-4, 4);
+      } else {
+        if(v===0){
+          ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--pellet') || '#ffd966';
+          const r = Math.max(2, TILE*0.06);
+          ctx.beginPath(); ctx.arc(px+TILE/2, py+TILE/2, r,0,Math.PI*2); ctx.fill();
+        } else if(v===2){
+          ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--power') || '#ff6b6b';
+          const r = Math.max(5, TILE*0.14);
+          ctx.beginPath(); ctx.arc(px+TILE/2, py+TILE/2, r,0,Math.PI*2); ctx.fill();
+        }
+      }
+    }
+  }
+}
+
+function willCollide(nextPx, nextPy){
+  const padding = 4;
+  const corners = [
+    {x: nextPx + padding, y: nextPy + padding},
+    {x: nextPx + TILE - padding, y: nextPy + padding},
+    {x: nextPx + padding, y: nextPy + TILE - padding},
+    {x: nextPx + TILE - padding, y: nextPy + TILE - padding}
+  ];
+  for(const c of corners){
+    const gx = Math.floor(c.x / TILE);
+    const gy = Math.floor(c.y / TILE);
+    if(gx < 0 || gy < 0 || gx >= GRID || gy >= GRID) return true;
+    if(map[gy][gx] === 1) return true;
+  }
+  return false;
+}
+
+function canMoveTo(tx,ty){
+  if(tx<0||ty<0||tx>=GRID||ty>=GRID) return false;
+  return map[ty][tx] !== 1;
+}
+
+function updatePac(){
+  const cx = pacPx + TILE/2, cy = pacPy + TILE/2;
+  if(Math.abs((cx % TILE) - TILE/2) < 0.6 && Math.abs((cy % TILE) - TILE/2) < 0.6){
+    pacPx = Math.round(pacPx / TILE) * TILE;
+    pacPy = Math.round(pacPy / TILE) * TILE;
+    pac.x = Math.round(pacPx / TILE);
+    pac.y = Math.round(pacPy / TILE);
+    if(pac.nextDir.x !==0 || pac.nextDir.y !==0){
+      const nx = pac.x + pac.nextDir.x, ny = pac.y + pac.nextDir.y;
+      if(canMoveTo(nx,ny)) pac.dir = pac.nextDir;
+      pac.nextDir = {x:0,y:0};
+    }
+    const tx = pac.x + pac.dir.x, ty = pac.y + pac.dir.y;
+    if(!canMoveTo(tx,ty)) pac.dir = {x:0,y:0};
+    const cell = map[pac.y][pac.x];
+    if(cell === 0){
+      score += 10;
+      map[pac.y][pac.x] = 3;
+      if(audioReady) playChomp();
+    } else if(cell === 2){
+      score += 50;
+      map[pac.y][pac.x] = 3;
+      ghosts.forEach(g=>{ g.frightened = true; g.frightTimer = 600; });
+      if(audioReady) playPower();
+    }
+  }
+  const nextPx = pacPx + pac.dir.x * pac.speed;
+  const nextPy = pacPy + pac.dir.y * pac.speed;
+  if(!willCollide(nextPx, nextPy)){
+    pacPx = nextPx;
+    pacPy = nextPy;
+  } else {
+    pacPx = Math.round(pacPx / TILE) * TILE;
+    pacPy = Math.round(pacPy / TILE) * TILE;
+    pac.dir = {x:0,y:0};
+  }
+  pac.x = Math.round(pacPx / TILE);
+  pac.y = Math.round(pacPy / TILE);
+  for(const g of ghosts){
+    const dx = (g.px + TILE/2) - (pacPx + TILE/2);
+    const dy = (g.py + TILE/2) - (pacPy + TILE/2);
+    const dist = Math.hypot(dx,dy);
+    if(dist < TILE*0.55){
+      if(g.frightened){
+        score += 200;
+        g.px = g.x * TILE; g.py = g.y * TILE; g.frightened = false;
+        if(audioReady) playGhostEaten();
+      } else {
+        loseLife();
+      }
+    }
+  }
+}
+
+function loseLife(){
+  lives--;
+  updateHUD();
+  if(lives <= 0){
+    running = false;
+    if(audioReady) playDeath();
+    showMessage('Game Over — Press Restart', 2500);
+  } else {
+    if(audioReady) playDeath();
+    resetPositions();
+    paused = true;
+    setTimeout(()=>paused=false, 800);
+  }
+}
+
+function resetPositions(){
+  pac.x = 9; pac.y = 15; pacPx = pac.x*TILE; pacPy = pac.y*TILE; pac.dir={x:0,y:0}; pac.nextDir={x:0,y:0};
+  spawnGhosts();
+}
+
+function render(){
+  ctx.clearRect(0,0,WIDTH,HEIGHT);
+  drawMap();
+  ghosts.forEach(g=>g.draw(ctx));
+  ctx.save();
+  ctx.translate(pacPx + TILE/2, pacPy + TILE/2);
+  const mouth = Math.abs(Math.sin(Date.now()*0.018))*0.55;
+  let ang = 0;
+  if(pac.dir.x===1) ang = 0;
+  else if(pac.dir.x===-1) ang = Math.PI;
+  else if(pac.dir.y===1) ang = Math.PI/2;
+  else if(pac.dir.y===-1) ang = -Math.PI/2;
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--pac') || '#ffd400';
+  ctx.beginPath(); ctx.moveTo(0,0);
+  ctx.arc(0,0,TILE*0.45, mouth + ang, (2*Math.PI - mouth) + ang);
+  ctx.lineTo(0,0); ctx.fill();
+  ctx.restore();
+  updateHUD();
+}
+
+function pelletsRemain(){
+  for(let y=0;y<GRID;y++) for(let x=0;x<GRID;x++) if(map[y][x]===0||map[y][x]===2) return true;
+  return false;
+}
+
+function gameLoop(){
+  if(running && !paused){
+    updatePac();
+    ghosts.forEach(g=>g.update());
+    if(!pelletsRemain()){
+      level++; score += 500;
+      if(audioReady) playLevelUp();
+      showMessage('Level Up!', 1200);
+      resetMap(); resetPositions();
+      paused = true;
+      setTimeout(()=>paused=false, 900);
+    }
+  }
+  render();
+  requestAnimationFrame(gameLoop);
+}
+
+function updateHUD(){
+  document.getElementById('score').innerText = score;
+  document.getElementById('lives').innerText = lives;
+  document.getElementById('level').innerText = level;
+}
+let msgEl = null;
+function showMessage(text, time=1500){
+  if(msgEl) msgEl.remove();
+  msgEl = document.createElement('div');
+  msgEl.style.position='absolute';
+  msgEl.style.left='50%';
+  msgEl.style.top='8%';
+  msgEl.style.transform='translateX(-50%)';
+  msgEl.style.padding='8px 12px';
+  msgEl.style.background='rgba(255,255,255,0.03)';
+  msgEl.style.border='1px solid rgba(255,255,255,0.04)';
+  msgEl.style.color='#cfe8ff';
+  msgEl.style.borderRadius='8px';
+  msgEl.style.fontWeight='800';
+  msgEl.innerText = text;
+  document.body.appendChild(msgEl);
+  if(time>0) setTimeout(()=>{ msgEl && msgEl.remove(); msgEl=null; }, time);
+}
+
+// Controls and audio activation
+window.addEventListener('keydown', (e)=>{
+  const key = e.key.toLowerCase();
+  if(!audioReady) initAudio(); // ensure audio unlocked on first key
+  if(e.code === 'Space'){ paused = !paused; return; }
+  let nd = {x:0,y:0};
+  if(key === 'arrowup' || key === 'w') nd = {x:0,y:-1};
+  if(key === 'arrowdown' || key === 's') nd = {x:0,y:1};
+  if(key === 'arrowleft' || key === 'a') nd = {x:-1,y:0};
+  if(key === 'arrowright' || key === 'd') nd = {x:1,y:0};
+  pac.nextDir = nd;
+});
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  if(!audioReady) initAudio(); // unlock audio on Start
+  startGame();
+});
+document.getElementById('pauseBtn').addEventListener('click', ()=>{ paused = !paused; });
+document.getElementById('restartBtn').addEventListener('click', ()=>{ restartGame(); });
+
+function startGame(){
+  resetMap(); resetPositions();
+  score = 0; lives = 3; level = 1;
+  running = true; paused = false;
+  updateHUD();
+  if(audioReady) playLevelUp(); // small sound to indicate start
+  showMessage('Ready!', 700);
+  paused = true;
+  setTimeout(()=>paused=false, 700);
+}
+function restartGame(){
+  resetMap(); resetPositions();
+  score = 0; lives = 3; level = 1;
+  running = true; paused = true;
+  setTimeout(()=>paused=false, 700);
+  updateHUD();
+}
+
+// init and run
+resetMap(); resetPositions(); updateHUD(); render();
+requestAnimationFrame(gameLoop);
+
+</script>
+</body>
+</html>
