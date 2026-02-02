@@ -226,6 +226,25 @@ nav a:hover{color:var(--accent);}
 }
 .theme-toggle:hover, .search-btn:hover{color:var(--accent);border-color:var(--accent);}
 
+  /* Valentine Button */
+.valentine-btn {
+  display:inline-block;
+  padding:16px 42px;
+  font-size:18px;
+  font-weight:800;
+  border-radius:999px;
+  text-decoration:none;
+  color:#fff;
+  background:linear-gradient(90deg,#e11d48,#7f1d1d);
+  box-shadow:0 0 22px rgba(225,29,72,0.6);
+  transition:all .35s ease;
+  animation:pulseGlow 2.5s infinite;
+}
+.valentine-btn:hover {
+  transform:scale(1.08);
+  box-shadow:0 0 36px rgba(225,29,72,0.95);
+}
+
 /* SEARCH BAR */
 #searchBar {
   display:none;
@@ -604,6 +623,28 @@ window.addEventListener("load", ()=>{
     },600);
   },600); // slightly shorter delay
 });
+
+  <!-- 💘 VALENTINE SECTION -->
+<section class="card" id="valentine">
+  <h2 style="
+    font-size:2.2em;
+    color:var(--accent);
+    text-shadow:0 0 10px rgba(225,29,72,0.5);
+    text-align:center;">
+    💘 Valentine Special
+  </h2>
+
+  <p class="muted" style="text-align:center;max-width:600px;margin:20px auto;">
+    Someone special is waiting for you…  
+    click below to unlock a little surprise ❤️
+  </p>
+
+  <div style="text-align:center;margin-top:30px;">
+    <a href="heartware.html" class="valentine-btn">
+      💖 Be My Valentine
+    </a>
+  </div>
+</section>
 
 /* -----------------------
    GAME: Spaceship Jump (Canvas)
