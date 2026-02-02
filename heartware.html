@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heartware 💛</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ---------- PASSWORD SCREEN ---------- */
+    .lock-screen {
+      text-align: center;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .lock-screen h1 {
+      font-size: clamp(42px, 10vw, 64px);
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ff1e56;
+      letter-spacing: 2px;
+    }
+
+    .lock-screen p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .lock-screen input {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .lock-screen button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background-color: #ff4d6d;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hint {
+      margin-top: 10px;
+      color: #b00020;
+      font-size: 16px;
+      display: none;
+    }
+
+    /* ---------- MAIN SITE ---------- */
+    .container {
+      text-align: center;
+      display: none;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    img {
+      width: 100%;
+      max-width: 280px;
+      margin: 15px auto;
+      display: block;
+    }
+
+    h2 {
+      font-size: clamp(24px, 6vw, 36px);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    button {
+      padding: 14px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .yes {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    .no {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    /* ---------- HEART FIREWORKS ---------- */
+    .heart {
+      position: absolute;
+      font-size: 22px;
+      animation: float 2s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-200px) scale(1.5); }
+    }
+
+    .yay {
+      font-size: clamp(40px, 10vw, 60px);
+      color: #ff1e56;
+      animation: pop 0.6s ease infinite alternate;
+      margin-bottom: 15px;
+    }
+
+    @keyframes pop {
+      from { transform: scale(1); }
+      to { transform: scale(1.2); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🔒 PASSWORD SCREEN -->
+  <div class="lock-screen" id="lockScreen">
+    <h1>Heartware</h1>
+    <p>Password :</p>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Unlock 💛</button>
+    <div class="hint" id="hint">Hint: Your Nickname</div>
+  </div>
+
+  <!-- 💖 MAIN WEBSITE -->
+  <div class="container" id="container">
+
+    <div class="tenor-gif-embed"
+      data-postid="10935765782451246898"
+      data-share-method="host"
+      data-aspect-ratio="0.947791"
+      data-width="100%">
+    </div>
+    <script async src="https://tenor.com/embed.js"></script>
+
+    <h2 id="text">Will you be my Valentine? 💛</h2>
+
+    <div class="buttons">
+      <button class="yes" onclick="yesClicked()">Yes</button>
+      <button class="no" onclick="noClicked()">No</button>
+    </div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value.toLowerCase();
+      const hint = document.getElementById("hint");
+
+      if (input === "bangaram") {
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("container").style.display = "block";
+      } else {
+        hint.style.display = "block";
+      }
+    }
+
+    let yesCount = 0;
+    let fontSize = 28;
+
+    function yesClicked() {
+      yesCount++;
+      fontSize += 6;
+      const text = document.getElementById("text");
+
+      if (yesCount < 5) {
+        text.innerText = "Are you sure? 🥺";
+        text.style.fontSize = fontSize + "px";
+      } else {
+        celebrate();
+      }
+    }
+
+    function noClicked() {
+      alert("Aww come on 😢");
+    }
+
+    function celebrate() {
+      const container = document.getElementById("container");
+      container.innerHTML = `
+        <div class="yay">YAYEEE ❤️</div>
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNW83ejBxMHA5NDU1dHExNTRiYTh6cWEyMnEzdzZjeXJiZmoxaTZsaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/11sBLVxNs7v6WA/giphy.gif">
+      `;
+      for (let i = 0; i < 30; i++) createHeart();
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }
+  </script>
+
+</body>
+</html>
