@@ -1,0 +1,48 @@
+.nav1 ,
+.nav2 {
+    
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    transition: 0.3s;
+
+}
+
+.nav1 a, .nav2 a{
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #2d3c4b;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 50px;
+}
+.nav1 a:hover ,.nav2 a:hover{
+color: #2d3c4b;
+cursor: pointer;
+font-weight: 700;
+}
+.logo img {
+    height: 270px;
+    width: 500px;
+    transition: 0.3s;
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.banner img{
+height: 900px;
+width: 2500px;
+margin: 0;
+display: block;
+}
