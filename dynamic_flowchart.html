@@ -401,6 +401,8 @@ body {
     </div>
     <button class="tb-btn accent" onclick="addFacility()">＋ Add Facility</button>
     <button class="tb-btn" onclick="exportJSON()">⬇ Export JSON</button>
+    <button class="tb-btn" onclick="document.getElementById('json-file-input').click()">⬆ Import JSON</button>
+    <input type="file" id="json-file-input" accept=".json" style="display:none" onchange="importJSON(event)">
   </div>
 </div>
 
@@ -886,6 +888,34 @@ function exportJSON() {
   const blob = new Blob([JSON.stringify(KITCHENS,null,2)],{type:'application/json'});
   const a = document.createElement('a');
   a.href=URL.createObjectURL(blob); a.download='central_kitchen.json'; a.click();
+}
+
+/* ══════════════════════════════════════════
+   IMPORT
+══════════════════════════════════════════ */
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      /* Accept either a single root object or an array of kitchens */
+      const incoming = Array.isArray(data) ? data : [data];
+      if (!incoming.length || !incoming[0].id || !incoming[0].label) {
+        alert('Invalid JSON: file does not look like a kitchen structure.');
+        return;
+      }
+      KITCHENS.length = 0;
+      incoming.forEach(k => KITCHENS.push(k));
+      render();
+    } catch {
+      alert('Could not parse JSON file. Make sure it was exported from this app.');
+    }
+    /* Reset input so the same file can be re-imported if needed */
+    event.target.value = '';
+  };
+  reader.readAsText(file);
 }
 
 /* ══════════════════════════════════════════
