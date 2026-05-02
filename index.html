@@ -6,7 +6,7 @@
 <title>Dev Das — The Forge of Wonders.</title>
 <meta content="Dev Das — Designer & Developer. Crafting digital experiences that feel as good as they look." name="description"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
-<link href="https://upload.wikimedia.org/wikipedia/en/7/7e/Sharingan_triple.svg" rel="icon" type="image/png"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡</text></svg>"/>
 <style>
 /* ===========================
    CSS VARIABLES & THEMES
@@ -19,39 +19,42 @@
   --ff-body: 'Crimson Text', Georgia, serif;
   --ff-serif: 'IM Fell English', Georgia, serif;
   --accent: #c9a84c;
-  --accent-dim: rgba(201,168,76,0.12);
-  --accent-glow: rgba(201,168,76,0.35);
-  --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+  --accent-dim: rgba(201,168,76,0.10);
+  --accent-glow: rgba(201,168,76,0.30);
+  --forest: #2d5a3d;
+  --forest-dim: rgba(45,90,61,0.18);
+  --forest-bright: #4a8c60;
+  --transition: 0.38s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* DARK THEME (default) — deep Frieren forest night */
+/* ─── DARK THEME — ancient forest at dusk ─── */
 body[data-theme='dark'] {
-  --bg: #0b0f0a;
-  --bg2: #111610;
-  --bg3: #161c14;
-  --text: #e8dfc0;
-  --muted: #8a8070;
-  --muted2: #4a4438;
-  --card: rgba(18,23,16,0.92);
-  --card-border: rgba(201,168,76,0.12);
-  --shadow: 0 20px 60px rgba(0,0,0,0.7);
-  --header-bg: rgba(11,15,10,0.92);
-  --input-bg: rgba(201,168,76,0.04);
+  --bg:          #080f0a;
+  --bg2:         #0d1710;
+  --bg3:         #121f15;
+  --text:        #ddd4b0;
+  --muted:       #7d8c70;
+  --muted2:      #3a4a35;
+  --card:        rgba(12,20,14,0.90);
+  --card-border: rgba(45,90,61,0.22);
+  --shadow:      0 20px 60px rgba(0,0,0,0.75);
+  --header-bg:   rgba(8,15,10,0.94);
+  --input-bg:    rgba(45,90,61,0.07);
 }
 
-/* LIGHT THEME — aged parchment / daylight forest */
+/* ─── LIGHT THEME — aged parchment in afternoon forest light ─── */
 body[data-theme='light'] {
-  --bg: #f2ead8;
-  --bg2: #e8dfc8;
-  --bg3: #faf5e8;
-  --text: #2a1f0e;
-  --muted: #6b5d3f;
-  --muted2: #a09070;
-  --card: rgba(250,245,232,0.94);
-  --card-border: rgba(100,70,20,0.15);
-  --shadow: 0 12px 40px rgba(30,20,5,0.12);
-  --header-bg: rgba(242,234,216,0.95);
-  --input-bg: rgba(100,70,20,0.05);
+  --bg:          #f0e8d0;
+  --bg2:         #e6dcc0;
+  --bg3:         #f8f2e0;
+  --text:        #1e1508;
+  --muted:       #5a4e30;
+  --muted2:      #9a8a68;
+  --card:        rgba(248,242,224,0.95);
+  --card-border: rgba(60,90,45,0.18);
+  --shadow:      0 12px 40px rgba(20,15,5,0.14);
+  --header-bg:   rgba(240,232,208,0.96);
+  --input-bg:    rgba(60,90,45,0.06);
 }
 
 /* ===========================
@@ -74,7 +77,7 @@ body {
   line-height: 1.6;
 }
 
-/* BACKGROUND — misty ancient forest */
+/* BACKGROUND — layered ancient forest mist */
 body::before {
   content: '';
   position: fixed;
@@ -82,34 +85,39 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 90% 70% at 20% 0%, rgba(40,70,30,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 60% at 80% 100%, rgba(201,168,76,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(20,40,15,0.12) 0%, transparent 80%);
-  transition: opacity var(--transition);
+    radial-gradient(ellipse 100% 80% at 0% 0%,   rgba(15,45,20,0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 80%  70% at 100% 100%,rgba(8,30,14,0.50) 0%, transparent 55%),
+    radial-gradient(ellipse 60%  50% at 50% 40%,  rgba(20,55,28,0.20) 0%, transparent 65%),
+    radial-gradient(ellipse 40%  30% at 80% 10%,  rgba(201,168,76,0.04) 0%, transparent 50%);
 }
 body[data-theme='light']::before {
   background:
-    radial-gradient(ellipse 90% 70% at 20% 0%, rgba(100,140,60,0.1) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 60% at 80% 100%, rgba(180,140,60,0.08) 0%, transparent 60%);
+    radial-gradient(ellipse 100% 80% at 0% 0%,   rgba(60,110,50,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 80%  70% at 100% 100%,rgba(40,80,30,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50%  40% at 50% 50%,  rgba(180,140,60,0.06) 0%, transparent 65%);
 }
 
-/* Floating rune particles */
+/* Rune column — left edge, faint etched feel */
 body::after {
-  content: '✦ ᚱ ✦ ᚹ ✦ ᚠ ✦ ᚺ ✦';
+  content: 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ';
   position: fixed;
-  top: 15%;
-  right: 3%;
-  font-size: 11px;
-  color: rgba(201,168,76,0.08);
-  letter-spacing: 8px;
+  top: 10%;
+  left: 18px;
+  font-size: 10px;
+  color: rgba(74,140,96,0.10);
+  letter-spacing: 14px;
   writing-mode: vertical-rl;
   pointer-events: none;
   z-index: 0;
-  animation: runeFloat 20s ease-in-out infinite;
+  line-height: 1;
+  animation: runeFloat 24s ease-in-out infinite;
+}
+body[data-theme='light']::after {
+  color: rgba(45,90,61,0.13);
 }
 @keyframes runeFloat {
-  0%, 100% { transform: translateY(0px); opacity: 0.08; }
-  50% { transform: translateY(-30px); opacity: 0.14; }
+  0%,100% { transform: translateY(0);   opacity: 0.8; }
+  50%      { transform: translateY(-24px); opacity: 1;   }
 }
 
 /* SCROLLBAR */
@@ -582,7 +590,7 @@ h2 {
 /* HERO CARD — ancient tome style */
 .hero-card {
   background: var(--card);
-  border: 1px solid var(--card-border);
+  border: 1px solid rgba(74,140,96,0.25);
   border-radius: 4px;
   padding: 28px;
   box-shadow: var(--shadow), inset 0 1px 0 rgba(201,168,76,0.06);
@@ -596,7 +604,7 @@ h2 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  background: linear-gradient(90deg, transparent, #4a8c60, #c9a84c, #4a8c60, transparent);
 }
 .hero-card::after {
   content: '❧';
@@ -716,8 +724,8 @@ h2 {
 }
 .service-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(201,168,76,0.1), var(--shadow);
-  border-color: rgba(201,168,76,0.3);
+  box-shadow: 0 20px 50px rgba(45,90,61,0.18), var(--shadow);
+  border-color: rgba(74,140,96,0.35);
 }
 .service-card:hover::after { opacity: 1; }
 
@@ -850,7 +858,7 @@ h2 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  background: linear-gradient(90deg, transparent, #4a8c60, #c9a84c, #4a8c60, transparent);
 }
 
 .hobbies-tags {
@@ -928,15 +936,15 @@ h2 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  background: linear-gradient(90deg, transparent, #4a8c60, #c9a84c, transparent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--transition);
 }
 .game-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 24px 50px rgba(201,168,76,0.12), var(--shadow);
-  border-color: rgba(201,168,76,0.3);
+  box-shadow: 0 24px 50px rgba(45,90,61,0.20), var(--shadow);
+  border-color: rgba(74,140,96,0.35);
 }
 .game-card:hover::before { transform: scaleX(1); }
 
@@ -1031,11 +1039,12 @@ h2 {
 
 .game-canvas {
   width: 100%;
-  height: 180px;
-  background: linear-gradient(180deg, rgba(5,10,4,0.8), rgba(5,10,4,0.95));
+  height: 200px;
+  background: linear-gradient(180deg, #030806 0%, #060f08 60%, #080e07 100%);
   border-radius: 3px;
   display: block;
-  border: 1px solid rgba(201,168,76,0.08);
+  border: 1px solid rgba(45,90,61,0.18);
+  cursor: pointer;
 }
 
 .game-controls {
@@ -1101,7 +1110,7 @@ h2 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  background: linear-gradient(90deg, transparent, #4a8c60, #c9a84c, #4a8c60, transparent);
 }
 /* Corner flourish */
 .contact-wrap::after {
@@ -1252,6 +1261,206 @@ footer span {
 .hero-card {
   animation: drift 14s ease-in-out infinite;
 }
+
+/* ===========================
+   PARCHMENT TEXTURE ON CARDS
+   =========================== */
+.service-card, .hobbies-card, .game-card, .contact-wrap, .hero-card, .game-wrap {
+  position: relative;
+}
+/* Subtle noise/grain texture via repeating gradient */
+.service-card::after,
+.hobbies-card::after,
+.game-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(45,90,61,0.015) 2px,
+      rgba(45,90,61,0.015) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+/* Keep card children above */
+.service-card > *, .hobbies-card > *, .game-wrap > * { position: relative; z-index: 1; }
+
+/* ===========================
+   RUNE DIVIDERS between sections
+   =========================== */
+section + section::before {
+  content: '— ✦ ᚠ ✦ ᚹ ✦ ᚱ ✦ ᚺ ✦ —';
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: rgba(74,140,96,0.30);
+  margin-bottom: 40px;
+  margin-top: -40px;
+  font-family: var(--ff-display);
+}
+body[data-theme='light'] section + section::before {
+  color: rgba(45,90,61,0.25);
+}
+
+/* ===========================
+   FOREST CARD BORDERS — dual tone
+   =========================== */
+.service-card {
+  border-color: rgba(45,90,61,0.22);
+}
+.service-card:hover {
+  border-color: rgba(74,140,96,0.40);
+}
+.hobbies-card {
+  border: 1px solid rgba(45,90,61,0.22);
+}
+.game-card {
+  border-color: rgba(45,90,61,0.20);
+}
+.game-coming-soon {
+  border: 1px dashed rgba(74,140,96,0.22);
+}
+.contact-wrap {
+  border-color: rgba(45,90,61,0.22);
+}
+
+/* ===========================
+   RIGHT RUNE COLUMN
+   =========================== */
+.container::after {
+  content: 'ᛟ ᛞ ᛚ ᛜ ᛗ ᛖ ᛒ ᛏ ᛊ ᛉ ᛈ';
+  position: fixed;
+  top: 20%;
+  right: 18px;
+  font-size: 10px;
+  color: rgba(201,168,76,0.07);
+  letter-spacing: 14px;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+  animation: runeFloat 30s ease-in-out infinite reverse;
+}
+body[data-theme='light'] .container::after {
+  color: rgba(140,100,30,0.10);
+}
+
+/* ===========================
+   PROFILE PHOTO — forest glow
+   =========================== */
+.about-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 6px;
+  background:
+    radial-gradient(ellipse at top left, rgba(45,90,61,0.25), transparent 65%),
+    radial-gradient(ellipse at bottom right, rgba(201,168,76,0.10), transparent 65%);
+  z-index: -1;
+}
+.profile-pic {
+  border-color: rgba(74,140,96,0.30);
+}
+.profile-pic:hover {
+  box-shadow: 0 20px 50px rgba(45,90,61,0.25), var(--shadow);
+}
+
+/* ===========================
+   SECTION LABEL — forest tint
+   =========================== */
+.section-label {
+  background: rgba(45,90,61,0.12);
+  border: 1px solid rgba(74,140,96,0.20);
+}
+
+/* ===========================
+   CHECKLIST — forest markers
+   =========================== */
+.checklist li::before {
+  content: '✦';
+  color: #4a8c60;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   STAT NUM — gold stays
+   =========================== */
+.stat-num { color: var(--accent); }
+
+/* ===========================
+   SCROLLBAR — forest to gold
+   =========================== */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4a8c60, #c9a84c);
+  border-radius: 2px;
+}
+
+/* ===========================
+   INPUT FOCUS — forest ring
+   =========================== */
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: rgba(74,140,96,0.60);
+  box-shadow: 0 0 0 3px rgba(45,90,61,0.10);
+}
+
+/* ===========================
+   FOREST GLOW on btn-primary
+   =========================== */
+.btn-primary {
+  background: linear-gradient(135deg, #3a7050 0%, #1e4a2a 50%, #c9a84c 100%);
+  color: #f0e8d0;
+  box-shadow: 0 4px 20px rgba(45,90,61,0.35);
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 28px rgba(45,90,61,0.50);
+}
+
+/* ===========================
+   GAME CANVAS — forest night
+   =========================== */
+.game-canvas {
+  background: linear-gradient(180deg, #030806 0%, #060f08 60%, #080f08 100%);
+  border: 1px solid rgba(45,90,61,0.15);
+}
+
+/* ===========================
+   FOOTER — rune line above
+   =========================== */
+footer::before {
+  content: '✦ ᚠ ✦ ᚹ ✦ ᚱ ✦ ᚺ ✦ ᚾ ✦';
+  display: block;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: rgba(74,140,96,0.20);
+  margin-bottom: 18px;
+  font-family: var(--ff-display);
+}
+footer {
+  border-top-color: rgba(45,90,61,0.20);
+}
+
+/* ===========================
+   HEADER rune strip
+   =========================== */
+header::after {
+  content: '— ✦ ᚠ ✦ ᚢ ✦ ᚦ ✦ ᚨ ✦ ᚱ ✦ ᚲ ✦ —';
+  color: rgba(74,140,96,0.20);
+}
+
+/* ===========================
+   HERO UNDERLINE — forest+gold
+   =========================== */
+.hero h1 span::after {
+  background: linear-gradient(90deg, #4a8c60, #c9a84c, transparent);
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -1260,22 +1469,39 @@ footer span {
 <div id="loader">
   <div class="loader-logo-wrap">
     <svg class="loader-logo-svg" width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Left D filled blue -->
-      <path d="M10 22 H30 C46 22 58 33 58 55 C58 77 46 88 30 88 H10 Z" fill="url(#loaderBlue)" />
-      <!-- Left D inner cutout -->
-      <path d="M22 36 H30 C38 36 44 44 44 55 C44 66 38 74 30 74 H22 Z" fill="#04060d" />
-      <!-- Code tag -->
-      <text x="33" y="62" font-family="monospace" font-size="14" font-weight="700" fill="white" text-anchor="middle" opacity="0.95">&lt;/&gt;</text>
-      <!-- Right D outline white -->
-      <path d="M54 22 H74 C90 22 102 33 102 55 C102 77 90 88 74 88 H54 Z" fill="none" stroke="white" stroke-width="7" />
-      <!-- Right D inner mask -->
-      <path d="M68 36 H74 C82 36 88 44 88 55 C88 66 82 74 74 74 H68 Z" fill="#04060d" stroke="#04060d" stroke-width="2" />
       <defs>
-        <linearGradient id="loaderBlue" x1="10" y1="22" x2="58" y2="88" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#60a5fa"/>
-          <stop offset="100%" stop-color="#1d4ed8"/>
+        <linearGradient id="loaderGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e8c96a"/>
+          <stop offset="100%" stop-color="#9a7220"/>
+        </linearGradient>
+        <linearGradient id="loaderForest" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#4a8c60"/>
+          <stop offset="100%" stop-color="#1e4a2a"/>
         </linearGradient>
       </defs>
+      <!-- Outer runic circle -->
+      <circle cx="55" cy="55" r="50" stroke="url(#loaderGold)" stroke-width="1" fill="none" opacity="0.6"/>
+      <!-- Inner circle -->
+      <circle cx="55" cy="55" r="40" stroke="url(#loaderForest)" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <!-- Shield body -->
+      <path d="M55 18 L82 30 L82 62 C82 78 55 92 55 92 C55 92 28 78 28 62 L28 30 Z"
+            fill="url(#loaderForest)" opacity="0.85"/>
+      <!-- Shield border -->
+      <path d="M55 18 L82 30 L82 62 C82 78 55 92 55 92 C55 92 28 78 28 62 L28 30 Z"
+            fill="none" stroke="url(#loaderGold)" stroke-width="1.5"/>
+      <!-- Shield inner line -->
+      <path d="M55 24 L76 34 L76 61 C76 74 55 86 55 86 C55 86 34 74 34 61 L34 34 Z"
+            fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/>
+      <!-- Rune cross / sword shape -->
+      <line x1="55" y1="34" x2="55" y2="76" stroke="url(#loaderGold)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="43" y1="48" x2="67" y2="48" stroke="url(#loaderGold)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Diamond gem at centre -->
+      <polygon points="55,42 60,48 55,54 50,48" fill="url(#loaderGold)" opacity="0.9"/>
+      <!-- Corner rune ticks on outer circle -->
+      <line x1="55" y1="5"  x2="55" y2="11" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+      <line x1="55" y1="99" x2="55" y2="105" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+      <line x1="5"  y1="55" x2="11" y2="55" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+      <line x1="99" y1="55" x2="105" y2="55" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
     </svg>
     <!-- Orbit ring around logo -->
     <div class="loader-orbit"></div>
@@ -1291,22 +1517,31 @@ footer span {
   <a class="brand" href="#">
     <div class="logo">
       <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Left D with gradient blue fill -->
-        <path d="M7 10 H16 C23 10 28 15 28 23 C28 31 23 36 16 36 H7 Z" fill="url(#blueGrad)" />
-        <!-- Inner cutout of left D -->
-        <path d="M12 16 H16 C19.5 16 22 19 22 23 C22 27 19.5 30 16 30 H12 Z" fill="#08080f" />
-        <!-- Code tag inside left D -->
-        <text x="14.5" y="27" font-family="monospace" font-size="7" font-weight="700" fill="white" text-anchor="middle" opacity="0.9">&lt;/&gt;</text>
-        <!-- Right D outline only (white stroke) -->
-        <path d="M25 10 H33 C40 10 45 15 45 23 C45 31 40 36 33 36 H25 Z" fill="none" stroke="white" stroke-width="3.5" />
-        <!-- Inner cutout mask for right D -->
-        <path d="M30 16 H33 C36.5 16 39 19 39 23 C39 27 36.5 30 33 30 H30 Z" fill="#08080f" stroke="#08080f" stroke-width="1" />
         <defs>
-          <linearGradient id="blueGrad" x1="7" y1="10" x2="28" y2="36" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#3b82f6"/>
-            <stop offset="100%" stop-color="#1d4ed8"/>
+          <linearGradient id="shieldForest" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a7050"/>
+            <stop offset="100%" stop-color="#1a3d28"/>
+          </linearGradient>
+          <linearGradient id="shieldGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e0c060"/>
+            <stop offset="100%" stop-color="#9a7220"/>
           </linearGradient>
         </defs>
+        <!-- Shield body -->
+        <path d="M23 4 L40 11 L40 28 C40 37 23 43 23 43 C23 43 6 37 6 28 L6 11 Z"
+              fill="url(#shieldForest)"/>
+        <!-- Shield border -->
+        <path d="M23 4 L40 11 L40 28 C40 37 23 43 23 43 C23 43 6 37 6 28 L6 11 Z"
+              fill="none" stroke="url(#shieldGold)" stroke-width="1.2"/>
+        <!-- Inner shield outline -->
+        <path d="M23 8 L36 14 L36 27 C36 34 23 39 23 39 C23 39 10 34 10 27 L10 14 Z"
+              fill="none" stroke="rgba(201,168,76,0.28)" stroke-width="0.7"/>
+        <!-- Sword vertical -->
+        <line x1="23" y1="13" x2="23" y2="34" stroke="url(#shieldGold)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Sword crossguard -->
+        <line x1="17" y1="21" x2="29" y2="21" stroke="url(#shieldGold)" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- Diamond pommel -->
+        <polygon points="23,13 25.5,16 23,19 20.5,16" fill="url(#shieldGold)" opacity="0.95"/>
       </svg>
     </div>
     <div class="brand-text">
@@ -1324,10 +1559,20 @@ footer span {
   </nav>
 
   <div class="controls">
-    <a href="heartware.html" class="btn-link">❤ Love</a>
-    <a href="dynamic_flowchart.html" class="btn-link">Corporate</a>
-    <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
-    <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+    <a href="heartware.html" class="btn-link">♥ Love</a>
+    <a href="dynamic_flowchart.html" class="btn-link">⚜ Guild</a>
+    <button class="icon-btn" id="searchBtn" title="Search">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+        <line x1="9.5" y1="9.5" x2="13.5" y2="13.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="icon-btn" id="themeToggle" title="Toggle theme">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M3.2 3.2l1.06 1.06M10.74 10.74l1.06 1.06M3.2 11.8l1.06-1.06M10.74 4.26l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <circle cx="7.5" cy="7.5" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -1336,6 +1581,9 @@ footer span {
 </div>
 
 <main>
+<!-- Forest wisp particle canvas — fixed behind content -->
+<canvas id="forestCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;transition:opacity 0.6s;"></canvas>
+
 <div class="container">
 
   <!-- HERO -->
@@ -1384,17 +1632,34 @@ footer span {
 
     <div class="services-grid">
       <div class="service-card">
-        <div class="service-icon">🎨</div>
+      <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 2 L13.5 8 L20 8.5 L15 13 L16.5 20 L11 16.5 L5.5 20 L7 13 L2 8.5 L8.5 8 Z" stroke="#c9a84c" stroke-width="1.2" fill="rgba(201,168,76,0.15)" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h3>Design & UI</h3>
         <p>Clean, accessible interfaces built with intention — crafted to engage, convert, and leave an impression.</p>
       </div>
       <div class="service-card">
-        <div class="service-icon">⚡</div>
+      <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <line x1="11" y1="2" x2="11" y2="18" stroke="#4a8c60" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="8" x2="15" y2="8" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/>
+            <polygon points="11,2 13,6 11,10 9,6" fill="rgba(201,168,76,0.6)"/>
+            <line x1="8" y1="18" x2="14" y2="18" stroke="#4a8c60" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
         <h3>Frontend Dev</h3>
         <p>Fast, scalable code with HTML, CSS, JavaScript, and React. Built for performance and maintainability.</p>
       </div>
       <div class="service-card">
-        <div class="service-icon">🚀</div>
+      <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 3 L19 7 L19 15 C19 18.5 11 21 11 21 C11 21 3 18.5 3 15 L3 7 Z" stroke="#4a8c60" stroke-width="1.2" fill="rgba(45,90,61,0.2)" stroke-linejoin="round"/>
+            <path d="M11 7 L15 9 L15 14 C15 16 11 18 11 18 C11 18 7 16 7 14 L7 9 Z" fill="rgba(201,168,76,0.15)" stroke="#c9a84c" stroke-width="0.8"/>
+            <line x1="11" y1="9" x2="11" y2="16" stroke="#c9a84c" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
         <h3>Deployment</h3>
         <p>Automated setup on Vercel, Netlify, or GitHub Pages — live and ready before you know it.</p>
       </div>
@@ -1430,21 +1695,21 @@ footer span {
       <p class="hobby-text">Beyond the arcane art of code, I am a devoted champion of virtual battlefields and an acolyte of physical mastery. Story-rich and competitive realms alike call to me.</p>
 
       <div class="hobbies-tags">
-        <span class="tag">🎮 PUBG PC</span>
-        <span class="tag">⚡ Valorant</span>
-        <span class="tag">✨ Genshin Impact</span>
-        <span class="tag">⚔️ Sekiro</span>
-        <span class="tag">🌸 Ghost of Tsushima</span>
-        <span class="tag">🔫 Call of Duty</span>
-        <span class="tag">💣 Battlefield</span>
-        <span class="tag">💪 Calisthenics</span>
+        <span class="tag">⚔ PUBG PC</span>
+        <span class="tag">✦ Valorant</span>
+        <span class="tag">✧ Genshin Impact</span>
+        <span class="tag">⚔ Sekiro</span>
+        <span class="tag">⛩ Ghost of Tsushima</span>
+        <span class="tag">✦ Call of Duty</span>
+        <span class="tag">⚔ Battlefield</span>
+        <span class="tag">◈ Calisthenics</span>
       </div>
 
       <p class="hobby-text">When I venture away from the screen, <strong>calisthenics</strong> is my chosen training ground — seeking mastery of balance, discipline, and swiftness of form.</p>
 
       <div class="hobby-links">
-        <a href="heartware.html" class="btn-primary" style="font-size:13px;padding:10px 20px;">❤️ Click For Love</a>
-        <a href="ProjectCoffee/kohi-chan.html" class="btn-ghost">☕ Coffee Project</a>
+        <a href="heartware.html" class="btn-primary" style="font-size:12px;padding:10px 20px;letter-spacing:2px;">♥ Click For Love</a>
+        <a href="ProjectCoffee/kohi-chan.html" class="btn-ghost">⚗ Coffee Project</a>
       </div>
     </div>
   </section>
@@ -1457,23 +1722,41 @@ footer span {
 
     <div class="games-grid">
       <div class="game-card">
-        <div class="game-emoji">👾</div>
+        <div class="game-emoji">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="19" r="17" stroke="#4a8c60" stroke-width="1" fill="rgba(45,90,61,0.15)"/>
+            <circle cx="19" cy="19" r="10" stroke="#c9a84c" stroke-width="0.8" fill="none" stroke-dasharray="3 2"/>
+            <polygon points="19,8 21,15 28,15 22,20 24,27 19,22 14,27 16,20 10,15 17,15" fill="none" stroke="#c9a84c" stroke-width="1" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h3>Pac‑Man</h3>
         <p>Classic arcade maze chase — eat pellets, dodge ghosts, and claim the high score.</p>
-        <a href="pacman_fixed_v4.html" class="game-btn" target="_blank">🎮 Play Pac‑Man</a>
+        <a href="pacman_fixed_v4.html" class="game-btn" target="_blank">▶ Play Pac‑Man</a>
       </div>
 
       <div class="game-card">
-        <div class="game-emoji">🚀</div>
+        <div class="game-emoji">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <path d="M19 4 L23 16 L36 16 L26 24 L30 36 L19 28 L8 36 L12 24 L2 16 L15 16 Z" fill="rgba(74,140,96,0.2)" stroke="#4a8c60" stroke-width="1.2" stroke-linejoin="round"/>
+            <line x1="19" y1="10" x2="19" y2="26" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="13" y1="18" x2="25" y2="18" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <h3>Space War</h3>
         <p>Space shooter arcade — pilot your ship, blast enemies, and survive relentless waves.</p>
-        <a href="spaceship_war_game.html" class="game-btn" target="_blank">🎮 Play Space War</a>
+        <a href="spaceship_war_game.html" class="game-btn" target="_blank">▶ Play Space War</a>
       </div>
 
       <div class="game-card game-coming-soon">
+        <div class="game-emoji">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <path d="M19 5 L33 12 L33 26 C33 33 19 38 19 38 C19 38 5 33 5 26 L5 12 Z" fill="rgba(45,90,61,0.15)" stroke="rgba(74,140,96,0.4)" stroke-width="1"/>
+            <text x="19" y="26" text-anchor="middle" font-size="14" fill="rgba(201,168,76,0.5)" font-family="serif">?</text>
+          </svg>
+        </div>
         <span class="coming-badge">Coming Soon</span>
-        <h3 style="font-family:var(--ff-display);font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">New Game</h3>
-        <p>More games arriving soon — stay tuned for the next drop!</p>
+        <h3 style="font-family:var(--ff-display);font-weight:600;font-size:16px;color:var(--text);margin-bottom:8px;letter-spacing:1px;">New Quest</h3>
+        <p>Another trial awaits — stay vigilant for the next challenge.</p>
       </div>
     </div>
   </section>
@@ -1481,7 +1764,7 @@ footer span {
   <!-- MINI GAME -->
   <section id="games">
     <div class="section-label">Trial of swiftness</div>
-    <h2>Spaceship Jump</h2>
+    <h2>Knight Run</h2>
     <p style="color:var(--muted);font-size:15px;font-family:var(--ff-body);font-style:italic;">Press <strong>Space</strong> or tap to leap. Dodge the ancient obstacles and endure!</p>
 
     <div class="game-wrap">
@@ -1490,7 +1773,12 @@ footer span {
         <span class="score" id="scoreDisplay">Score: 0</span>
         <span class="hint">Space / Tap to jump</span>
         <span class="score">Best: <span id="highScore">0</span></span>
-        <button class="icon-btn" id="muteBtn" title="Mute">🔊</button>
+        <button class="icon-btn" id="muteBtn" title="Mute">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 5h2l3-3v10l-3-3H2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M10 4.5c1 .8 1.5 1.5 1.5 2.5S11 9 10 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </button>
         <button class="restart" id="restartBtn">↺ Restart</button>
       </div>
     </div>
@@ -1530,7 +1818,7 @@ footer span {
 </main>
 
 <footer>
-  © <span id="year"></span> <span>DEV DAS</span> · Forge of wonders.
+  © <span id="year"></span> <span>CHANDAN DAS</span> · Forge of wonders.
 </footer>
 
 </div><!-- /content -->
@@ -1572,7 +1860,7 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
 function showContactSuccess() {
   const wrap = document.querySelector('.contact-wrap');
   const msg = document.createElement('div');
-  msg.textContent = '✅ Message sent — I\'ll reply soon!';
+  msg.textContent = '✦ Message sent — I shall reply soon ✦';
   msg.style.cssText = 'text-align:center;margin-top:16px;color:var(--accent);font-weight:600;font-family:var(--ff-display);opacity:0;transition:opacity .4s;font-size:13px;letter-spacing:2px;text-transform:uppercase;';
   wrap.appendChild(msg);
   requestAnimationFrame(() => msg.style.opacity = 1);
@@ -1583,18 +1871,22 @@ function showContactSuccess() {
 /* === THEME TOGGLE === */
 const toggle = document.getElementById('themeToggle');
 const body = document.body;
+
+const moonSVG = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12.5 9A5.5 5.5 0 016 2.5a.5.5 0 00-.6-.6A6.5 6.5 0 1013.1 9.6a.5.5 0 00-.6-.6z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+const sunSVG  = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M3.2 3.2l1.06 1.06M10.74 10.74l1.06 1.06M3.2 11.8l1.06-1.06M10.74 4.26l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>`;
+
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
   body.dataset.theme = savedTheme;
-  toggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+  toggle.innerHTML = savedTheme === 'dark' ? moonSVG : sunSVG;
 } else {
   body.dataset.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  toggle.textContent = body.dataset.theme === 'dark' ? '🌙' : '☀️';
+  toggle.innerHTML = body.dataset.theme === 'dark' ? moonSVG : sunSVG;
 }
 toggle.addEventListener('click', () => {
   const newTheme = body.dataset.theme === 'dark' ? 'light' : 'dark';
   body.dataset.theme = newTheme;
-  toggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+  toggle.innerHTML = newTheme === 'dark' ? moonSVG : sunSVG;
   localStorage.setItem('theme', newTheme);
 });
 
@@ -1647,147 +1939,458 @@ window.addEventListener("load", () => {
 /* === GAME === */
 (function() {
   const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  let deviceRatio = window.devicePixelRatio || 1;
-  let W = 800, H = 180;
+  const ctx    = canvas.getContext('2d');
+  let W = 800, H = 200, GROUND = 164;
 
+  /* ── RESIZE ── */
   function resizeGameCanvas() {
-    deviceRatio = window.devicePixelRatio || 1;
-    const container = canvas.parentElement;
-    const rect = container.getBoundingClientRect();
-    let dw = rect.width || Math.min(820, window.innerWidth - 80) || 800;
-    dw = Math.min(820, dw);
-    canvas.width = Math.floor(dw * deviceRatio);
-    canvas.height = Math.floor(180 * deviceRatio);
-    canvas.style.width = dw + 'px';
-    canvas.style.height = '180px';
-    ctx.setTransform(deviceRatio, 0, 0, deviceRatio, 0, 0);
-    W = canvas.width / deviceRatio;
-    H = canvas.height / deviceRatio;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    let dw = Math.min(820, rect.width || window.innerWidth - 48);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.floor(dw * dpr);
+    canvas.height = Math.floor(200 * dpr);
+    canvas.style.width  = dw + 'px';
+    canvas.style.height = '200px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    W = dw; H = 200; GROUND = H - 36;
   }
   window.resizeGameCanvas = resizeGameCanvas;
-  resizeGameCanvas();
   let rTO;
   window.addEventListener('resize', () => { clearTimeout(rTO); rTO = setTimeout(resizeGameCanvas, 120); });
 
-  let running = true, score = 0;
-  let high = Number(localStorage.getItem('ss_high') || 0);
+  /* ── STATE ── */
+  let state = 'idle'; // idle | running | dead
+  let score = 0, frame = 0, gameSpeed = 4.5;
+  let high  = Number(localStorage.getItem('dino_high') || 0);
   const scoreEl = document.getElementById('scoreDisplay');
-  const highEl = document.getElementById('highScore');
+  const highEl  = document.getElementById('highScore');
   highEl.textContent = high;
 
-  const ship = {
-    x: 60, y: H - 48, w: 44, h: 22, vy: 0,
-    gravity: 0.9, jumpStrength: -14, grounded: true,
+  /* ── PARALLAX TREES ── */
+  const BG_LAYERS = [
+    { speed:0.3, color:'rgba(15,40,20,0.28)',  hMin:40, hMax:70,  wMin:8,  wMax:14, trees:[] },
+    { speed:0.7, color:'rgba(20,58,30,0.48)',  hMin:30, hMax:55,  wMin:6,  wMax:10, trees:[] },
+    { speed:1.1, color:'rgba(32,75,42,0.68)',  hMin:22, hMax:40,  wMin:5,  wMax:8,  trees:[] },
+  ];
+  BG_LAYERS.forEach((l,li) => {
+    for (let i = 0; i < 8 + li*2; i++) {
+      l.trees.push({ x: Math.random()*900, h: l.hMin+Math.random()*(l.hMax-l.hMin), w: l.wMin+Math.random()*(l.wMax-l.wMin) });
+    }
+  });
+
+  function drawBg() {
+    // Sky
+    const sky = ctx.createLinearGradient(0,0,0,GROUND);
+    sky.addColorStop(0,'#050e07'); sky.addColorStop(1,'#0a1c0e');
+    ctx.fillStyle = sky; ctx.fillRect(0,0,W,GROUND);
+    // Moon glow
+    const mg = ctx.createRadialGradient(W*0.80,26,0,W*0.80,26,50);
+    mg.addColorStop(0,'rgba(230,210,150,0.16)'); mg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = mg; ctx.fillRect(0,0,W,GROUND);
+    // Stars
+    ctx.fillStyle = 'rgba(220,210,180,0.50)';
+    [[60,18],[130,9],[210,22],[320,7],[420,15],[540,24],[660,10],[745,20],[785,8],[170,30],[490,6],[590,28]].forEach(([sx,sy])=>{
+      ctx.fillRect(sx%W, sy, 1.2, 1.2);
+    });
+    // Tree layers
+    if (state !== 'idle') {
+      BG_LAYERS.forEach(l => {
+        l.trees.forEach(t => {
+          if (state === 'running') t.x -= l.speed;
+          if (t.x < -20) t.x = W + 10;
+          ctx.fillStyle = l.color;
+          ctx.beginPath();
+          ctx.moveTo(t.x, GROUND-1);
+          ctx.lineTo(t.x-t.w/2, GROUND-t.h*0.38);
+          ctx.lineTo(t.x-t.w*0.32, GROUND-t.h*0.38);
+          ctx.lineTo(t.x-t.w*0.52, GROUND-t.h*0.72);
+          ctx.lineTo(t.x-t.w*0.22, GROUND-t.h*0.72);
+          ctx.lineTo(t.x, GROUND-t.h);
+          ctx.lineTo(t.x+t.w*0.22, GROUND-t.h*0.72);
+          ctx.lineTo(t.x+t.w*0.52, GROUND-t.h*0.72);
+          ctx.lineTo(t.x+t.w*0.32, GROUND-t.h*0.38);
+          ctx.lineTo(t.x+t.w/2, GROUND-t.h*0.38);
+          ctx.closePath(); ctx.fill();
+        });
+      });
+    }
+    // Ground
+    const gg = ctx.createLinearGradient(0,GROUND,0,H);
+    gg.addColorStop(0,'#1c4025'); gg.addColorStop(1,'#0e2016');
+    ctx.fillStyle = gg; ctx.fillRect(0,GROUND,W,H-GROUND);
+    ctx.strokeStyle = 'rgba(74,140,96,0.55)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0,GROUND); ctx.lineTo(W,GROUND); ctx.stroke();
+    // Ground texture scrolling dots
+    if (state === 'running') {
+      ctx.fillStyle = 'rgba(45,90,55,0.38)';
+      const off = (frame * gameSpeed) % 30;
+      for (let gx = -off; gx < W; gx += 30) {
+        ctx.fillRect(gx, GROUND+5, 8, 1.5);
+        ctx.fillRect(gx+15, GROUND+13, 5, 1.5);
+      }
+    }
+  }
+
+  /* ── KNIGHT ── */
+  const knight = {
+    x:58, y:GROUND, w:24, h:36,
+    vy:0, gravity:0.72, jumpStrength:-13.5, grounded:true,
+
     draw() {
+      const bx = this.x - 12, by = this.y - this.h;
       ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.fillStyle = 'white';
+      // Cape
+      ctx.fillStyle = '#2a5438';
       ctx.beginPath();
-      ctx.moveTo(0, -10); ctx.lineTo(28, -5); ctx.lineTo(28, 5); ctx.lineTo(0, 10);
+      ctx.moveTo(bx+7, by+9);
+      ctx.quadraticCurveTo(bx-5, by+24, bx+3, by+36);
+      ctx.lineTo(bx+11, by+34);
+      ctx.quadraticCurveTo(bx+9, by+20, bx+15, by+11);
       ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(225,29,72,0.95)';
-      ctx.fillRect(6, -6, 10, 12);
+      // Body armour
+      ctx.fillStyle = '#3c4c42';
+      ctx.fillRect(bx+5, by+11, 15, 18);
+      // Armour trim
+      ctx.fillStyle = 'rgba(201,168,76,0.28)';
+      ctx.fillRect(bx+7, by+13, 3, 14);
+      // Legs with run cycle
+      const lOff = state === 'running' ? Math.sin(frame * 0.26) * 5 : 0;
+      ctx.fillStyle = '#2c3830';
+      ctx.fillRect(bx+5,  by+29+lOff,      6, 9);
+      ctx.fillRect(bx+13, by+29-lOff*0.8,  6, 9);
+      // Boots
+      ctx.fillStyle = '#7a5c18';
+      ctx.fillRect(bx+4,  by+36+Math.max(0,lOff),    8, 3);
+      ctx.fillRect(bx+12, by+36-Math.max(0,lOff*0.8), 8, 3);
+      // Helmet
+      ctx.fillStyle = '#4c5e54';
+      ctx.beginPath(); ctx.arc(bx+13, by+7, 8, Math.PI, 0); ctx.fill();
+      ctx.fillRect(bx+5, by+7, 16, 6); ctx.fill();
+      // Plume
+      ctx.fillStyle = '#c9a84c';
+      ctx.fillRect(bx+11, by, 4, 8);
+      // Eye slit glow
+      ctx.fillStyle = 'rgba(80,220,120,0.75)';
+      ctx.fillRect(bx+8, by+8, 9, 2);
+      // Sword
+      const sY = this.grounded ? 0 : -5;
+      ctx.fillStyle = '#b0b8b0'; ctx.fillRect(bx+20, by+5+sY, 4, 12); // blade
+      ctx.fillStyle = '#9a8060'; ctx.fillRect(bx+21, by+17+sY, 3, 8);  // handle
+      ctx.fillStyle = '#c9a84c'; ctx.fillRect(bx+17, by+16+sY, 10, 2); // guard
       ctx.restore();
     },
+
     update() {
       this.vy += this.gravity; this.y += this.vy;
-      if (this.y >= H - 48) { this.y = H - 48; this.vy = 0; this.grounded = true; }
+      if (this.y >= GROUND) { this.y = GROUND; this.vy = 0; this.grounded = true; }
       else { this.grounded = false; }
     },
+
     jump() {
       if (this.grounded) { this.vy = this.jumpStrength; this.grounded = false; playSfx('jump'); }
     },
-    reset() { this.y = H - 48; this.vy = 0; this.grounded = true; }
+
+    reset() { this.y = GROUND; this.vy = 0; this.grounded = true; },
+
+    hitBox() { return { x: this.x-8, y: this.y-this.h+5, w: 16, h: this.h-8 }; }
   };
 
-  let obstacles = [], spawnTimer = 0, spawnInterval = 90, gameSpeed = 6;
-  function spawnObstacle() {
-    const size = 18 + Math.random() * 26;
-    obstacles.push({
-      x: W + 20,
-      y: H - 42 - (Math.random() < 0.3 ? (10 + Math.random() * 30) : 0),
-      w: size, h: size, vx: -gameSpeed,
+  /* ── OBSTACLES ── */
+  let obstacles = [], spawnTimer = 0, spawnInterval = 105;
+
+  function makeStone(x) {
+    return {
+      x, w:18, h:38,
       draw() {
-        ctx.save(); ctx.translate(this.x, this.y);
-        ctx.fillStyle = 'rgba(130,130,130,0.95)';
-        ctx.beginPath(); ctx.arc(0, 0, this.w / 2, 0, Math.PI * 2); ctx.fill();
-        ctx.restore();
+        const bx=this.x, by=GROUND-this.h;
+        ctx.fillStyle='#28382e'; ctx.fillRect(bx,by,this.w,this.h);
+        ctx.fillStyle='#3a6040'; ctx.fillRect(bx-3,by,this.w+6,5);
+        ctx.strokeStyle='rgba(201,168,76,0.40)'; ctx.lineWidth=0.8;
+        ctx.strokeRect(bx+4,by+8,10,16);
+        ctx.beginPath();
+        ctx.moveTo(bx+9,by+8); ctx.lineTo(bx+9,by+24);
+        ctx.moveTo(bx+4,by+16); ctx.lineTo(bx+14,by+16);
+        ctx.stroke();
       },
-      update() { this.x += this.vx; }
-    });
+      hitBox() { return {x:this.x+2, y:GROUND-this.h, w:this.w-4, h:this.h}; }
+    };
   }
 
-  const audioContext = ('AudioContext' in window) ? new AudioContext() : null;
-  function playSfx(type) {
-    if (!audioContext || mute) return;
-    const o = audioContext.createOscillator(), g = audioContext.createGain();
-    o.connect(g); g.connect(audioContext.destination);
-    if (type === 'jump') { o.frequency.value = 520; g.gain.value = 0.02; o.type = 'sine'; }
-    else if (type === 'hit') { o.frequency.value = 120; g.gain.value = 0.05; o.type = 'sawtooth'; }
-    o.start(); setTimeout(() => o.stop(), 120);
+  function makeLog(x) {
+    return {
+      x, w:36, h:18,
+      draw() {
+        const bx=this.x, by=GROUND-this.h;
+        ctx.fillStyle='#3e2b1a';
+        ctx.beginPath(); ctx.roundRect(bx,by+4,this.w,this.h-4,4); ctx.fill();
+        ctx.strokeStyle='rgba(80,50,25,0.55)'; ctx.lineWidth=1;
+        for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(bx+5+i*8,by+4);ctx.lineTo(bx+5+i*8,by+this.h);ctx.stroke();}
+        ctx.fillStyle='#3c6442';
+        ctx.beginPath(); ctx.ellipse(bx+this.w/2,by+4,this.w/2-2,4,0,0,Math.PI*2); ctx.fill();
+      },
+      hitBox() { return {x:this.x+2, y:GROUND-this.h+4, w:this.w-4, h:this.h-6}; }
+    };
   }
 
+  function makeRocks(x) {
+    return {
+      x, w:30, h:24,
+      draw() {
+        const bx=this.x, by=GROUND;
+        [{dx:0,dy:-14,r:9},{dx:15,dy:-10,r:7},{dx:8,dy:-21,r:7}].forEach(s=>{
+          ctx.fillStyle='#28382e';
+          ctx.beginPath(); ctx.arc(bx+s.dx,by+s.dy,s.r,0,Math.PI*2); ctx.fill();
+          ctx.strokeStyle='rgba(74,140,96,0.38)'; ctx.lineWidth=0.8; ctx.stroke();
+        });
+      },
+      hitBox() { return {x:this.x+2, y:GROUND-this.h, w:this.w-4, h:this.h}; }
+    };
+  }
+
+  const OBS = [makeStone, makeLog, makeRocks];
+
+  /* ── AUDIO ── */
+  const audioCtx = ('AudioContext' in window) ? new AudioContext() : null;
   let mute = false;
-  document.getElementById('muteBtn').addEventListener('click', function() {
-    mute = !mute; this.textContent = mute ? '🔇' : '🔊';
-  });
-  document.getElementById('restartBtn').addEventListener('click', resetGame);
-  window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') { e.preventDefault(); if (!running) resetGame(); ship.jump(); }
-  });
-  canvas.addEventListener('mousedown', () => { if (!running) resetGame(); ship.jump(); });
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault(); if (!running) resetGame(); ship.jump();
-  }, { passive: false });
+  function playSfx(type) {
+    if (!audioCtx || mute) return;
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    if (type==='jump') { o.frequency.value=440; g.gain.value=0.03; o.type='sine'; }
+    else               { o.frequency.value=100; g.gain.value=0.06; o.type='sawtooth'; }
+    o.start(); setTimeout(()=>o.stop(),140);
+  }
 
-  let frame = 0;
-  function update() {
-    if (!running) return;
+  /* ── CONTROLS ── */
+  const muteSVG  = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5h2l3-3v10l-3-3H2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 4.5c1 .8 1.5 1.5 1.5 2.5S11 9 10 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+  const mutedSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5h2l3-3v10l-3-3H2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><line x1="10" y1="5" x2="13" y2="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="13" y1="5" x2="10" y2="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+  document.getElementById('muteBtn').addEventListener('click', function() {
+    mute = !mute; this.innerHTML = mute ? mutedSVG : muteSVG;
+  });
+  document.getElementById('restartBtn').addEventListener('click', () => {
+    if (state==='dead') resetGame(); else if (state==='idle') startGame();
+  });
+
+  function handleInput() {
+    if (state==='idle')    { startGame(); return; }
+    if (state==='dead')    { resetGame(); return; }
+    knight.jump();
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.code==='Space'||e.code==='ArrowUp') { e.preventDefault(); handleInput(); }
+  });
+  canvas.addEventListener('mousedown', handleInput);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); handleInput(); }, {passive:false});
+
+  /* ── COLLISION ── */
+  function hits(a,b) {
+    return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
+  }
+
+  /* ── OVERLAY SCREENS ── */
+  function drawIdleScreen() {
+    drawBg(); knight.draw();
+    const cw=284, ch=62, cx=W/2, cy=H/2-8;
+    ctx.fillStyle='rgba(6,12,8,0.84)';
+    ctx.beginPath(); ctx.roundRect(cx-cw/2,cy-ch/2,cw,ch,5); ctx.fill();
+    ctx.strokeStyle='rgba(74,140,96,0.45)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.strokeStyle='rgba(201,168,76,0.55)'; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(cx-cw/2+10,cy-ch/2); ctx.lineTo(cx+cw/2-10,cy-ch/2); ctx.stroke();
+    ctx.textAlign='center';
+    ctx.fillStyle='#c9a84c'; ctx.font='bold 13px Cinzel,Georgia,serif';
+    ctx.fillText('⚔  The Knight Awaits  ⚔', cx, cy+2);
+    ctx.fillStyle='rgba(200,188,155,0.68)'; ctx.font='12px Crimson Text,Georgia,serif';
+    ctx.fillText('Press  Space  or  tap  to  begin', cx, cy+20);
+  }
+
+  function drawDeadScreen() {
+    ctx.fillStyle='rgba(3,7,4,0.72)'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(74,140,96,0.42)'; ctx.lineWidth=1;
+    ctx.strokeRect(14,14,W-28,H-28);
+    ctx.strokeStyle='rgba(201,168,76,0.20)'; ctx.strokeRect(18,18,W-36,H-36);
+    ctx.fillStyle='rgba(201,168,76,0.38)'; ctx.font='10px serif';
+    ctx.textAlign='left';  ctx.fillText('ᚠ',20,32);
+    ctx.textAlign='right'; ctx.fillText('ᚱ',W-20,32);
+    ctx.textAlign='left';  ctx.fillText('ᚹ',20,H-18);
+    ctx.textAlign='right'; ctx.fillText('ᚺ',W-20,H-18);
+    ctx.textAlign='center';
+    ctx.fillStyle='#e0bf6a'; ctx.font='bold 18px Cinzel,Georgia,serif';
+    ctx.fillText('⚔  The Knight Has Fallen  ⚔', W/2, H/2-14);
+    ctx.fillStyle='rgba(160,215,170,0.82)'; ctx.font='13px Cinzel,Georgia,serif';
+    ctx.fillText('Score: '+score, W/2, H/2+6);
+    ctx.fillStyle='rgba(200,188,155,0.62)'; ctx.font='12px Crimson Text,Georgia,serif';
+    ctx.fillText('Press  Space  or  tap  to  rise  again', W/2, H/2+25);
+  }
+
+  /* ── MAIN LOOP ── */
+  function loop() {
+    if (state==='idle')  { drawIdleScreen(); requestAnimationFrame(loop); return; }
+    if (state==='dead')  { requestAnimationFrame(loop); return; }
+
     frame++;
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = 'rgba(255,255,255,0.03)';
-    ctx.fillRect(0, H - 32, W, 2);
-    ship.update(); ship.draw();
+    drawBg();
+    knight.update(); knight.draw();
+
     spawnTimer++;
     if (spawnTimer > spawnInterval) {
-      spawnObstacle(); spawnTimer = 0;
-      spawnInterval = 60 + Math.floor(Math.random() * 60);
+      const fn = OBS[Math.floor(Math.random()*OBS.length)];
+      obstacles.push(fn(W+30));
+      spawnTimer = 0;
+      spawnInterval = 70 + Math.floor(Math.random()*80);
     }
-    for (let i = obstacles.length - 1; i >= 0; i--) {
+
+    const kb = knight.hitBox();
+    for (let i = obstacles.length-1; i >= 0; i--) {
       const o = obstacles[i];
-      o.vx = -gameSpeed; o.update(); o.draw();
-      if (Math.abs(ship.x - o.x) < (ship.w / 2 + o.w / 2) && Math.abs(ship.y - o.y) < (ship.h / 2 + o.h / 2)) {
-        running = false; playSfx('hit'); showGameOver();
+      o.x -= gameSpeed; o.draw();
+      if (hits(kb, o.hitBox())) {
+        state = 'dead'; playSfx('hit');
+        if (score>high) { high=score; highEl.textContent=high; localStorage.setItem('dino_high',high); }
+        drawDeadScreen();
+        requestAnimationFrame(loop); return;
       }
-      if (o.x + o.w < -50) obstacles.splice(i, 1);
+      if (o.x+o.w < -40) obstacles.splice(i,1);
     }
-    if (frame % 3 === 0) {
-      score++;
-      scoreEl.textContent = 'Score: ' + score;
-      if (score > high) { high = score; highEl.textContent = high; localStorage.setItem('ss_high', high); }
-    }
-    if (frame % 600 === 0) gameSpeed += 0.6;
-    requestAnimationFrame(update);
+
+    if (frame%6===0) { score++; scoreEl.textContent='Score: '+score; }
+    if (frame%480===0) gameSpeed = Math.min(gameSpeed+0.4, 13);
+
+    requestAnimationFrame(loop);
   }
 
-  function showGameOver() {
-    ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = 'rgba(232,223,192,0.85)'; ctx.font = '15px Crimson Text, serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Game Over — Click or press Space to restart', W / 2, H / 2 - 8);
-    ctx.fillStyle = '#e0bf6a'; ctx.font = 'bold 24px Cinzel, serif';
-    ctx.fillText('Score: ' + score, W / 2, H / 2 + 22);
+  /* ── START / RESET ── */
+  function startGame() {
+    state='running'; obstacles=[]; spawnTimer=0; spawnInterval=105;
+    score=0; frame=0; gameSpeed=4.5;
+    scoreEl.textContent='Score: 0'; knight.reset();
   }
-
-  function resetGame() {
-    obstacles = []; spawnTimer = 0; spawnInterval = 90; gameSpeed = 6;
-    score = 0; frame = 0; scoreEl.textContent = 'Score: 0';
-    ship.reset(); running = true; resizeGameCanvas(); update();
-  }
+  function resetGame() { startGame(); }
   window.resetGame = resetGame;
-  resetGame();
+
+  resizeGameCanvas();
+  loop(); // starts in idle — no auto-run
 })();
+
+/* === FOREST WISP PARTICLES === */
+
+(function() {
+  const fc = document.getElementById('forestCanvas');
+  if (!fc) return;
+  const fx = fc.getContext('2d');
+  let FW, FH;
+
+  function resizeForest() {
+    FW = fc.width  = window.innerWidth;
+    FH = fc.height = window.innerHeight;
+  }
+  resizeForest();
+  window.addEventListener('resize', resizeForest);
+
+  function isDark() { return document.body.dataset.theme !== 'light'; }
+
+  // Update canvas opacity based on theme
+  function syncOpacity() {
+    fc.style.opacity = isDark() ? '1' : '0.35';
+  }
+  syncOpacity();
+
+  // Watch theme changes
+  const themeObserver = new MutationObserver(syncOpacity);
+  themeObserver.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+
+  const WISP_COUNT = 42;
+  const wisps = Array.from({ length: WISP_COUNT }, () => createWisp(false));
+
+  function createWisp(fromBottom = false) {
+    const isGold = Math.random() < 0.28;
+    return {
+      x:       Math.random() * window.innerWidth,
+      y:       fromBottom ? window.innerHeight + 10 : Math.random() * window.innerHeight,
+      r:       0.9 + Math.random() * 2.4,
+      vx:      (Math.random() - 0.5) * 0.32,
+      vy:      -(0.16 + Math.random() * 0.42),
+      life:    0,
+      maxLife: 200 + Math.random() * 340,
+      gold:    isGold,
+      phase:   Math.random() * Math.PI * 2,
+    };
+  }
+
+  function drawWisp(w) {
+    const dark     = isDark();
+    const progress = w.life / w.maxLife;
+    // Smooth fade in/out over lifetime
+    const alpha    = Math.sin(progress * Math.PI) * (dark ? 0.92 : 0.45);
+    const wobbleX  = Math.sin(w.phase + w.life * 0.028) * 1.4;
+    const cx = w.x + wobbleX;
+    const cy = w.y;
+
+    // In dark mode: larger glow radius for bloom effect
+    const glowR = dark ? w.r * 5.5 : w.r * 3.0;
+
+    const grad = fx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+
+    if (w.gold) {
+      grad.addColorStop(0,   `rgba(255,230,120,${alpha})`);          // bright centre
+      grad.addColorStop(0.15,`rgba(224,191,106,${alpha * 0.85})`);
+      grad.addColorStop(0.45,`rgba(180,140,50,${alpha * 0.40})`);
+      grad.addColorStop(1,   'rgba(0,0,0,0)');
+    } else {
+      grad.addColorStop(0,   `rgba(160,255,180,${alpha})`);          // bright mint core
+      grad.addColorStop(0.15,`rgba(74,200,110,${alpha * 0.85})`);
+      grad.addColorStop(0.45,`rgba(35,100,55,${alpha * 0.38})`);
+      grad.addColorStop(1,   'rgba(0,0,0,0)');
+    }
+
+    // Core bright dot
+    if (dark) {
+      fx.beginPath();
+      fx.arc(cx, cy, w.r * 0.55, 0, Math.PI * 2);
+      fx.fillStyle = w.gold
+        ? `rgba(255,245,180,${alpha * 1.0})`
+        : `rgba(200,255,210,${alpha * 1.0})`;
+      fx.fill();
+    }
+
+    // Outer glow bloom
+    fx.beginPath();
+    fx.arc(cx, cy, glowR, 0, Math.PI * 2);
+    fx.fillStyle = grad;
+    fx.fill();
+  }
+
+  function animateForest() {
+    fx.clearRect(0, 0, FW, FH);
+    for (let i = 0; i < wisps.length; i++) {
+      const w = wisps[i];
+      drawWisp(w);
+      w.x  += w.vx;
+      w.y  += w.vy;
+      w.life++;
+      if (w.life >= w.maxLife || w.y < -20) {
+        wisps[i] = createWisp(true);
+      }
+    }
+    requestAnimationFrame(animateForest);
+  }
+  animateForest();
+})();
+
+/* === HERO ENTRANCE STAGGER === */
+window.addEventListener('load', () => {
+  const heroChildren = document.querySelectorAll('.hero > *');
+  heroChildren.forEach((el, i) => {
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateY(28px)';
+    el.style.transition = `opacity 0.7s ease ${i * 0.18}s, transform 0.7s ease ${i * 0.18}s`;
+    setTimeout(() => {
+      el.style.opacity   = '1';
+      el.style.transform = 'translateY(0)';
+    }, 1500 + i * 180);
+  });
+});
 </script>
 </body>
 </html>
